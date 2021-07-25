@@ -5,6 +5,9 @@
   "version": "independent",
   "npmClient": "npm",
   "concurrency": 1,
+  "publishConfig": {
+    "access": "public"
+  },
   "command": {
     "publish": {
       "registry": "https://registry.npmjs.org",
