@@ -21,6 +21,11 @@
     "lint": "eslint bin"
   },
   "author": "David Nunez <arizonatribe@gmail.com>",
+  "homepage": "https://github.com/arizonatribe/vanillas-packages/blob/main/packages/scaffolding-cli/README.md",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:arizonatribe/vanillas-packages.git"
+  },
   "dependencies": {
     "@vanillas/console-logger": "^1.0.0"
   },

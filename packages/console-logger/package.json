@@ -22,10 +22,10 @@
     "prepare": "npm run lint"
   },
   "author": "David Nunez <arizonatribe@gmail.com>",
-  "homepage": "https://github.com/arizonatribe/@vanillas/console-logger/master/#readme",
+  "homepage": "https://github.com/arizonatribe/vanillas-packages/blob/main/packages/console-logger/README.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/arizonatribe/@vanillas/console-logger.git"
+    "url": "git@github.com:arizonatribe/vanillas-packages.git"
   },
   "devDependencies": {
     "eslint": "^7.28.0",
