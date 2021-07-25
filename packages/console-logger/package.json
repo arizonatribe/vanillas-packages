@@ -1,0 +1,36 @@
+{
+  "name": "@vanillas/console-logger",
+  "version": "1.0.0",
+  "description": "A wrapper around the native Console API but which supports top-down threshold (levels) based control",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=12.17.0"
+  },
+  "keywords": [
+    "log",
+    "logging",
+    "console",
+    "log levels",
+    "log thresholds",
+    "console logging",
+    "threshold logging"
+  ],
+  "scripts": {
+    "lint": "eslint index.js",
+    "prepare": "npm run lint"
+  },
+  "author": "David Nunez <arizonatribe@gmail.com>",
+  "homepage": "https://github.com/arizonatribe/@vanillas/console-logger/master/#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arizonatribe/@vanillas/console-logger.git"
+  },
+  "devDependencies": {
+    "eslint": "^7.28.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jsdoc": "^30.7.3"
+  }
+}

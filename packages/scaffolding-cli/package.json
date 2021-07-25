@@ -1,0 +1,33 @@
+{
+  "name": "@vanillas/scaffolding-cli",
+  "version": "1.0.0",
+  "description": "A scaffolding script you can point at any template folder",
+  "main": "bin/index.js",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=12.17.0"
+  },
+  "bin": {
+    "scaffold-template": "bin/index.js",
+    "scaffold-vanilla-template": "bin/index.js"
+  },
+  "keywords": [
+    "create app",
+    "templates",
+    "scaffolding"
+  ],
+  "scripts": {
+    "lint": "eslint bin"
+  },
+  "author": "David Nunez <arizonatribe@gmail.com>",
+  "dependencies": {
+    "@vanillas/console-logger": "^1.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.28.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jsdoc": "^30.7.3"
+  }
+}

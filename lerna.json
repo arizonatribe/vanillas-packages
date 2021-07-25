@@ -1,0 +1,22 @@
+{
+  "packages": [
+    "packages/*"
+  ],
+  "version": "independent",
+  "npmClient": "npm",
+  "concurrency": 1,
+  "command": {
+    "publish": {
+      "registry": "https://registry.npmjs.org",
+      "ignoreChanges": [
+        "nodemonConfig.json",
+        "package-lock.json",
+        ".gitignore",
+        ".eslintrc",
+        "docs",
+        ".env",
+        "*.md"
+      ]
+    }
+  }
+}
