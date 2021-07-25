@@ -3,7 +3,7 @@
 const fs = require("fs")
 const path = require("path")
 const { spawnSync } = require("child_process")
-const logger = require("@vanillas/console.logger")
+const logger = require("@vanillas/console-logger")
 
 /**
  * Scaffolds out the project (at a given directory) using the boilerplate files in this application's `lib/` folder.
