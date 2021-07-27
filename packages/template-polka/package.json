@@ -1,7 +1,7 @@
 {
-  "name": "@vanillas/template-express",
-  "version": "1.0.3",
-  "description": "A scaffolding template for ExpressJs REST APIs",
+  "name": "@vanillas/template-polka",
+  "version": "1.0.0",
+  "description": "A scaffolding template for PolkaJs REST APIs",
   "main": "lib/server.js",
   "license": "MIT",
   "type": "commonjs",
@@ -9,9 +9,9 @@
     "node": ">=12.17.0"
   },
   "keywords": [
-    "express",
-    "express api",
-    "express template",
+    "polka",
+    "polka api",
+    "polka template",
     "scaffolding"
   ],
   "scripts": {
@@ -20,7 +20,7 @@
     "prod": "node -v && node lib/server.js"
   },
   "author": "David Nunez <arizonatribe@gmail.com>",
-  "homepage": "https://github.com/arizonatribe/vanillas-packages/blob/main/packages/template-express/README.md",
+  "homepage": "https://github.com/arizonatribe/vanillas-packages/blob/main/packages/template-polka/README.md",
   "repository": {
     "type": "git",
     "url": "git@github.com:arizonatribe/vanillas-packages.git"
@@ -29,14 +29,13 @@
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "envalid": "^5.0.0",
-    "express": "^4.17.1",
     "helmet": "^4.6.0",
     "pino": "^6.11.3",
-    "pino-pretty": "^5.0.2"
+    "pino-pretty": "^5.0.2",
+    "polka": "^0.5.2"
   },
   "devDependencies": {
     "@vanillas/eslint-config": "^1.0.0",
     "nodemon": "^2.0.7"
-  },
-  "gitHead": "8d9991504013daf7d90a4fe7f5cba66c06d7a678"
+  }
 }

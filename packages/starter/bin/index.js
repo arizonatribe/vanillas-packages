@@ -3,28 +3,40 @@
 const fs = require("fs")
 const path = require("path")
 const { spawnSync } = require("child_process")
-const logger = require("../lib/consoleLogger")
+const logger = require("@vanillas/console-logger")
+const { parseArgs } = require("@vanillas/cli-toolkit")
 
 /**
- * Scaffolds out the project (at a given directory) using the boilerplate files in this application's `lib/` folder.
+ * Scaffolds out the project (at a given directory) using the boilerplate files for a given NodeJs template package
  *
  * @function
  * @name scaffoldProject
  */
 function scaffoldProject() {
-  const args = process.argv.slice(2)
+  const options = parseArgs(process.argv.slice(2))
 
   try {
-    if (!args.length) {
+    const projectFolderName = options[0]
+    if (!projectFolderName) {
       throw new TypeError("Must include a name for the project directory")
     }
 
-    const [projectFolderName] = args
     if (fs.existsSync(projectFolderName) && fs.readdirSync(projectFolderName).length) {
       throw new Error(`Project folder already exists: '${projectFolderName}'`)
     }
 
-    const projectDir = path.resolve(projectFolderName)
+    if (!options.template) {
+      throw new TypeError("Missing the template name (use the --template flag)")
+    }
+
+    let templateDir
+    try {
+      templateDir = require.resolve(`@vanillas/template-${options.template.replace(/^template-?/, "")}`)
+    } catch (e) {
+      throw new Error(`Unable to find a template matching name '${options.template}'`)
+    }
+
+    const projectDir = path.resolve(projectFolderName || ".")
     const folderParts = [...projectDir.split(path.sep).filter(Boolean), "lib"]
 
     let currentDir = "/"
@@ -34,8 +46,6 @@ function scaffoldProject() {
       }
       currentDir = path.resolve(currentDir, folder)
     })
-
-    const templateDir = path.resolve(__dirname, "../lib")
 
     let currentTemplateDir = templateDir
     fs.readdirSync(templateDir).forEach(fileOrFolder => {
@@ -55,13 +65,18 @@ function scaffoldProject() {
       bin: _b,
       ...pkgJson
     } = require("../package.json")
-    const eslintConfig = fs.readFileSync(path.resolve(__dirname, "..", ".eslintrc"))
+    const eslintConfig = fs.readFileSync(path.resolve(templateDir, ".eslintrc"))
 
     fs.writeFileSync(
       path.resolve(projectDir, "package.json"),
       JSON.stringify({
         ...pkgJson,
-        name: projectFolderName.split(path.sep).filter(Boolean).reverse()[0],
+        ...(projectFolderName && {
+          name: projectFolderName
+            .split(path.sep)
+            .filter(Boolean)
+            .reverse()[0]
+        }),
         private: true,
         version: "0.0.1",
         description: "TODO"
@@ -75,7 +90,7 @@ function scaffoldProject() {
       throw new Error("Scaffolding failed‼️")
     }
 
-    logger.info(`🚀 Finished scaffolding out the project at: '${projectFolderName}'`)
+    logger.info(`🚀 Finished scaffolding out the project at:\n '${projectDir}'`)
 
     process.exit(0)
   } catch (err) {

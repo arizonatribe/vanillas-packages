@@ -1,6 +1,9 @@
 {
   "htmlWhitespaceSensitivity": "css",
   "printWidth": 120,
+  "bracketSpacing": true,
+  "quoteProps": "as-needed",
+  "endOfLine": "lf",
   "semi": false,
   "tabWidth": 2,
   "trailingComma": "none",

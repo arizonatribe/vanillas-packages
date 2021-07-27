@@ -1,0 +1,33 @@
+{
+  "name": "@vanillas/eslint-config",
+  "version": "1.0.0",
+  "description": "A plain linting configuration template for JavaScript and TypeScript NodeJs applications",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=12.17.0"
+  },
+  "keywords": [
+    "eslint config",
+    "linting"
+  ],
+  "scripts": {
+    "lint": "eslint lib"
+  },
+  "author": "David Nunez <arizonatribe@gmail.com>",
+  "homepage": "https://github.com/arizonatribe/vanillas-packages/blob/main/packages/eslint-config/README.md",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:arizonatribe/vanillas-packages.git"
+  },
+  "devDependencies": {
+    "eslint": "^7.28.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jsdoc": "^30.7.3",
+    "@typescript-eslint/parser": "^4.5.0",
+    "@typescript-eslint/eslint-plugin": "^4.5.0",
+    "typescript": "^4.1.3"
+  }
+}

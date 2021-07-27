@@ -1,0 +1,37 @@
+{
+  "name": "@vanillas/starter",
+  "version": "1.0.0",
+  "description": "A tool to start out a new NodeJs application from a variety of scaffolding templates",
+  "main": "bin/index.js",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=12.17.0"
+  },
+  "bin": {
+    "create-vanillas-express": "bin/create-express.js"
+  },
+  "keywords": [
+    "create app",
+    "templates",
+    "scaffolding"
+  ],
+  "scripts": {
+    "lint": "eslint bin"
+  },
+  "author": "David Nunez <arizonatribe@gmail.com>",
+  "homepage": "https://github.com/arizonatribe/vanillas-packages/blob/main/packages/starter/README.md",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:arizonatribe/vanillas-packages.git"
+  },
+  "dependencies": {
+    "@vanillas/console-logger": "^1.0.0",
+    "@vanillas/cli-toolkit": "^1.0.0",
+    "@vanillas/template-express": "^1.0.0",
+    "prompts": "^2.4.1"
+  },
+  "devDependencies": {
+    "@vanillas/eslint-config": "^1.0.0"
+  }
+}

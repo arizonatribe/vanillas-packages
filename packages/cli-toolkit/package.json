@@ -1,0 +1,33 @@
+{
+  "name": "@vanillas/cli-toolkit",
+  "version": "1.0.0",
+  "description": "A suite of helper utilities you can use to create NodeJs scripts",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=12.17.0"
+  },
+  "keywords": [
+    "cli",
+    "command-line interface",
+    "cli utils"
+  ],
+  "scripts": {
+    "lint": "eslint lib"
+  },
+  "author": "David Nunez <arizonatribe@gmail.com>",
+  "homepage": "https://github.com/arizonatribe/vanillas-packages/blob/main/packages/cli-toolkit/README.md",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:arizonatribe/vanillas-packages.git"
+  },
+  "dependencies": {
+    "@vanillas/console-logger": "^1.0.0",
+    "fs-extra": "^10.0.0",
+    "vanillas": "^1.5.0"
+  },
+  "devDependencies": {
+    "@vanillas/eslint-config": "^1.0.0"
+  }
+}
