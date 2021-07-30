@@ -130,13 +130,23 @@ async function scaffoldProject() {
 
     generateFiles(templateDir, projectFolder)
 
-    const {
-      author: _a,
-      version: _v,
-      license: _l,
-      bin: _b,
-      ...pkgJson
-    } = require(path.resolve(templateDir, "package.json"))
+    const pkgJson = require(path.resolve(templateDir, "package.json"))
+
+    let author = ""
+    try {
+      for (const val of ["name", "email"]) {
+        const { output: userOutput } = spawnSync("git", ["config", `user.${val}`])
+        const parsedUserVal = userOutput.toString().replace(/,/g, "").replace(/\n/g, "")
+        author = [
+          author,
+          author && val === "email" ? " <" : " ",
+          parsedUserVal,
+          author && val === "email" ? ">" : ""
+        ].filter(Boolean).join("").trim()
+      }
+    } catch (e) {
+      logger.warn(e)
+    }
 
     fs.writeFileSync(
       path.resolve(projectFolder, "package.json"),
@@ -148,9 +158,16 @@ async function scaffoldProject() {
             .filter(Boolean)
             .reverse()[0]
         }),
+        // TODO: Supportither 'module' or 'commonjs'
+        // type: "commonjs",
         private: true,
+        author,
         version: "0.0.1",
-        description: "TODO"
+        description: "TODO",
+        license: "UNLICENSED",
+        ...["main", "engines", "scripts", "dependencies", "devDependencies", "peerDependencies"]
+          .filter(prop => pkgJson[prop] != null)
+          .reduce((obj, prop) => ({ ...obj, [prop]: pkgJson[prop] }), {})
       }, null, 2)
     )
 
