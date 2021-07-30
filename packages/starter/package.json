@@ -29,13 +29,14 @@
     "url": "git@github.com:arizonatribe/vanillas-packages.git"
   },
   "dependencies": {
-    "@vanillas/console-logger": "^1.0.0",
     "@vanillas/cli-toolkit": "^1.0.0",
+    "@vanillas/console-logger": "^1.0.0",
     "@vanillas/template-express": "^1.0.0",
     "@vanillas/template-polka": "^1.0.0",
     "prompts": "^2.4.1"
   },
   "devDependencies": {
     "@vanillas/eslint-config": "^1.0.0"
-  }
+  },
+  "gitHead": "8a702a08e6bbf36ea0546c706ad3c52247a4a8d6"
 }
