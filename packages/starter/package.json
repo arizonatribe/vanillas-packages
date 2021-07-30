@@ -1,5 +1,5 @@
 {
-  "name": "@vanillas/starter",
+  "name": "create-vanillas-app",
   "version": "1.0.0",
   "description": "A tool to start out a new NodeJs application from a variety of scaffolding templates",
   "main": "bin/index.js",
@@ -9,8 +9,6 @@
     "node": ">=12.17.0"
   },
   "bin": {
-    "create-vanillas-express": "bin/create-express.js",
-    "create-vanillas-polka": "bin/create-polka.js",
     "create-vanillas-app": "bin/index.js"
   },
   "keywords": [
