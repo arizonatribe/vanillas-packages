@@ -1,10 +1,105 @@
 #!/usr/bin/env node
-/* eslint-disable global-require */
+/* eslint-disable global-require, import/no-dynamic-require */
 const fs = require("fs")
 const path = require("path")
+const prompts = require("prompts")
 const { spawnSync } = require("child_process")
 const logger = require("@vanillas/console-logger")
 const { parseArgs } = require("@vanillas/cli-toolkit")
+
+const templates = [
+  { title: "ExpressJs", value: "express" },
+  { title: "PolkaJs", value: "polka" }
+]
+
+/**
+ * Cancels the scaffolding
+ *
+ * @function
+ * @name onCancel
+ */
+function onCancel() {
+  logger.warn("Canceled creation of a new app")
+  process.exit(0)
+}
+
+/**
+ * Collects configuration values from the user for a new app to be scaffolded
+ *
+ * @function
+ * @name inputPrompt
+ * @param {object} defaults The default values which the user may have passed in via CLI flags
+ * @returns {Promise<object>} The collected values
+ */
+async function inputPrompt(defaults = {}) {
+  const options = {
+    ...(defaults.appName && {
+      appName: defaults.appName.trim().replace(/\s/g, "-")
+    }),
+    ...(templates.some(t => t.value === defaults.template) && {
+      template: defaults.template
+    })
+  }
+
+  if (!options.appName) {
+    ({ appName: options.appName } = await prompts([{
+      type: "text",
+      name: "appName",
+      message: "What will be the name of your app?",
+      format: val => (val || "").trim().replace(/\s/g, "-"),
+      validate: val => !/^\s*$/.test(val)
+    }], { onCancel }))
+  }
+
+  if (!defaults.appName) {
+    ({ projectFolder: options.projectFolder } = await prompts([{
+      type: "text",
+      name: "projectFolder",
+      initial: path.resolve(options.appName),
+      message: "Where should the app be located?",
+      format: val => path.resolve((val || "").trim().replace(/\s/g, "-")),
+      validate: val => !/^\s*$/.test(val)
+    }], { onCancel }))
+  } else {
+    options.projectFolder = path.resolve(options.appName)
+  }
+
+  if (!options.template) {
+    ({ template: options.template } = await prompts([{
+      type: "select",
+      name: "template",
+      message: "What kind of app are you creating?",
+      choices: templates
+    }], { onCancel }))
+  }
+
+  return options
+}
+
+/**
+ * Copies files/folders (recursively) from a source directory to a destination directory
+ *
+ * @function
+ * @name generateFiles
+ * @param {string} sourceDir The source folder
+ * @param {string} destinationDir The destination folder
+ */
+function generateFiles(sourceDir, destinationDir) {
+  if (!fs.existsSync(destinationDir)) {
+    fs.mkdirSync(destinationDir)
+  }
+
+  fs.readdirSync(sourceDir)
+    .filter(v => !/^(node_modules|LICENSE|README.md|package-lock.json)/.test(v))
+    .forEach(fileOrFolder => {
+      if (fs.statSync(path.resolve(sourceDir, fileOrFolder)).isDirectory()) {
+        generateFiles(path.resolve(sourceDir, fileOrFolder), path.resolve(destinationDir, fileOrFolder))
+      } else {
+        const content = fs.readFileSync(path.resolve(sourceDir, fileOrFolder), "utf8")
+        fs.writeFileSync(path.resolve(destinationDir, fileOrFolder), content)
+      }
+    })
+}
 
 /**
  * Scaffolds out the project (at a given directory) using the boilerplate files for a given NodeJs template package
@@ -12,51 +107,28 @@ const { parseArgs } = require("@vanillas/cli-toolkit")
  * @function
  * @name scaffoldProject
  */
-function scaffoldProject() {
+async function scaffoldProject() {
   const options = parseArgs(process.argv.slice(2))
 
   try {
-    const projectFolderName = options[0]
-    if (!projectFolderName) {
-      throw new TypeError("Must include a name for the project directory")
-    }
+    const { appName, projectFolder, template } = await inputPrompt({ appName: options[0], ...options })
 
-    if (fs.existsSync(projectFolderName) && fs.readdirSync(projectFolderName).length) {
-      throw new Error(`Project folder already exists: '${projectFolderName}'`)
-    }
-
-    if (!options.template) {
-      throw new TypeError("Missing the template name (use the --template flag)")
+    if (fs.existsSync(projectFolder) && fs.readdirSync(projectFolder).length) {
+      throw new Error(`Project folder already exists: '${appName}'`)
     }
 
     let templateDir
     try {
-      templateDir = require.resolve(`@vanillas/template-${options.template.replace(/^template-?/, "")}`)
+      const templateFullName = `template-${template.replace(/^template-?/, "")}`
+      const resolvedTemplateMain = require.resolve(`@vanillas/${templateFullName}`)
+      const [templateBasePath] = resolvedTemplateMain.split(templateFullName)
+      templateDir = path.resolve(templateBasePath, templateFullName)
     } catch (e) {
-      throw new Error(`Unable to find a template matching name '${options.template}'`)
+      logger.warn(e)
+      throw new Error(`Unable to find a template matching name '${template}'`)
     }
 
-    const projectDir = path.resolve(projectFolderName || ".")
-    const folderParts = [...projectDir.split(path.sep).filter(Boolean), "lib"]
-
-    let currentDir = "/"
-    folderParts.forEach(folder => {
-      if (!fs.existsSync(path.resolve(currentDir, folder))) {
-        fs.mkdirSync(path.resolve(currentDir, folder))
-      }
-      currentDir = path.resolve(currentDir, folder)
-    })
-
-    let currentTemplateDir = templateDir
-    fs.readdirSync(templateDir).forEach(fileOrFolder => {
-      if (fs.statSync(path.resolve(currentTemplateDir, fileOrFolder)).isDirectory()) {
-        currentTemplateDir = path.resolve(currentTemplateDir, fileOrFolder)
-        fs.mkdirSync(path.resolve(currentDir, currentTemplateDir))
-      } else {
-        const content = fs.readFileSync(path.resolve(currentTemplateDir, fileOrFolder), "utf8")
-        fs.writeFileSync(path.resolve(currentDir, fileOrFolder), content)
-      }
-    })
+    generateFiles(templateDir, projectFolder)
 
     const {
       author: _a,
@@ -64,15 +136,14 @@ function scaffoldProject() {
       license: _l,
       bin: _b,
       ...pkgJson
-    } = require("../package.json")
-    const eslintConfig = fs.readFileSync(path.resolve(templateDir, ".eslintrc"))
+    } = require(path.resolve(templateDir, "package.json"))
 
     fs.writeFileSync(
-      path.resolve(projectDir, "package.json"),
+      path.resolve(projectFolder, "package.json"),
       JSON.stringify({
         ...pkgJson,
-        ...(projectFolderName && {
-          name: projectFolderName
+        ...(appName && {
+          name: appName
             .split(path.sep)
             .filter(Boolean)
             .reverse()[0]
@@ -82,15 +153,14 @@ function scaffoldProject() {
         description: "TODO"
       }, null, 2)
     )
-    fs.writeFileSync(path.resolve(projectDir, ".eslintrc"), eslintConfig)
 
-    const { status } = spawnSync("npm", ["install"], { cwd: projectDir, stdio: "inherit" })
+    const { status } = spawnSync("npm", ["install"], { cwd: projectFolder, stdio: "inherit" })
 
     if (status) {
       throw new Error("Scaffolding failed‼️")
     }
 
-    logger.info(`🚀 Finished scaffolding out the project at:\n '${projectDir}'`)
+    logger.info(`🚀 Finished scaffolding out '${appName}' at:\n '${projectFolder}'`)
 
     process.exit(0)
   } catch (err) {

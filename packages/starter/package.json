@@ -9,7 +9,9 @@
     "node": ">=12.17.0"
   },
   "bin": {
-    "create-vanillas-express": "bin/create-express.js"
+    "create-vanillas-express": "bin/create-express.js",
+    "create-vanillas-polka": "bin/create-polka.js",
+    "create-vanillas-app": "bin/index.js"
   },
   "keywords": [
     "create app",
@@ -17,6 +19,7 @@
     "scaffolding"
   ],
   "scripts": {
+    "start": "bin/index.js",
     "lint": "eslint bin"
   },
   "author": "David Nunez <arizonatribe@gmail.com>",
@@ -29,6 +32,7 @@
     "@vanillas/console-logger": "^1.0.0",
     "@vanillas/cli-toolkit": "^1.0.0",
     "@vanillas/template-express": "^1.0.0",
+    "@vanillas/template-polka": "^1.0.0",
     "prompts": "^2.4.1"
   },
   "devDependencies": {
