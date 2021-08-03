@@ -1,6 +1,6 @@
 {
   "name": "@vanillas/template-polka",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A scaffolding template for PolkaJs REST APIs",
   "main": "lib/server.js",
   "license": "MIT",

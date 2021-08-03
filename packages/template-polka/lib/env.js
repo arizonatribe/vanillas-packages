@@ -22,7 +22,7 @@ module.exports = envalid.cleanEnv(process.env, {
     choices: ["trace", "debug", "info", "warn", "error", "fatal"]
   }),
   PORT: port({
-    default: 3010,
+    default: 3000,
     example: 5000,
     desc: "The port on which this application runs"
   })
