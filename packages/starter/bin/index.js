@@ -36,7 +36,7 @@ async function scaffoldProject() {
 
     generateFiles(templateDir, projectFolder)
 
-    buildPackageJson(templateDir, projectFolder)
+    buildPackageJson(templateDir, projectFolder, appName)
 
     const { status } = spawnSync("npm", ["install"], { cwd: projectFolder, stdio: "inherit" })
 

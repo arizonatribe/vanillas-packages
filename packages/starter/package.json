@@ -1,6 +1,6 @@
 {
   "name": "create-vanillas-app",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A tool to start out a new NodeJs application from a variety of scaffolding templates",
   "main": "bin/index.js",
   "license": "MIT",
