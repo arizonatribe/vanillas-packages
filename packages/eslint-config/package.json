@@ -1,6 +1,6 @@
 {
   "name": "@vanillas/eslint-config",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A plain linting configuration template for JavaScript and TypeScript NodeJs applications",
   "main": "lib/index.js",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "type": "git",
     "url": "git@github.com:arizonatribe/vanillas-packages.git"
   },
-  "devDependencies": {
+  "dependencies": {
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
     "eslint": "^7.28.0",
