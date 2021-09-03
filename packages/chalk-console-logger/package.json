@@ -1,0 +1,38 @@
+{
+  "name": "@vanillas/chalk-console-logger",
+  "version": "1.0.0",
+  "description": "An enhanced version of @vanillas/console-logger which injects an instance of chalk into any functions passed into a logger method",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=12.17.0"
+  },
+  "keywords": [
+    "log",
+    "chalk",
+    "logging",
+    "console",
+    "log levels",
+    "log thresholds",
+    "console logging",
+    "threshold logging"
+  ],
+  "scripts": {
+    "lint": "eslint index.js",
+    "prepare": "npm run lint"
+  },
+  "author": "David Nunez <arizonatribe@gmail.com>",
+  "homepage": "https://github.com/arizonatribe/vanillas-packages/blob/main/packages/chalk-console-logger/README.md",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:arizonatribe/vanillas-packages.git"
+  },
+  "dependencies": {
+    "@vanillas/console-logger": "^1.0.0",
+    "chalk": "^4.1.2"
+  },
+  "devDependencies": {
+    "@vanillas/eslint-config": "^1.0.0"
+  }
+}
