@@ -9,11 +9,20 @@ const toCamelCase = require("vanillas/toCamelCase")
  * @returns {boolean|number|string|Array<*>|object} The original value, but coerced to a number or boolean _if_ that value was a stringified number or boolean
  */
 function toArgValue(val) {
-  return /^(true|false)$/i.test(val)
+  const primitiveValue = /^(true|false)$/i.test(val)
     ? /^true$/i.test(val)
     : /^\d+(\.\d+)?$/.test(val)
       ? +val
-      : val
+      : undefined
+  if (primitiveValue != null) {
+    return primitiveValue
+  }
+
+  try {
+    return JSON.parse(val)
+  } catch (err) {
+    return val
+  }
 }
 
 /**
