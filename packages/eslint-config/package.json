@@ -13,6 +13,7 @@
     "linting"
   ],
   "scripts": {
+    "format": "eslint lib --fix",
     "lint": "eslint lib"
   },
   "author": "David Nunez <arizonatribe@gmail.com>",

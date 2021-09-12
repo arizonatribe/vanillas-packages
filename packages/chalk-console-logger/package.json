@@ -19,6 +19,7 @@
     "threshold logging"
   ],
   "scripts": {
+    "format": "eslint index.js --fix",
     "lint": "eslint index.js",
     "prepare": "npm run lint"
   },

@@ -19,6 +19,7 @@
     "bootstrap:ci": "lerna bootstrap --ci",
     "dist": "lerna publish from-package --no-push --no-git-tag-version",
     "dist:ci": "lerna publish from-package --no-push --no-git-tag-version --yes",
+    "format": "lerna run format",
     "lint": "lerna run lint"
   },
   "author": "David Nunez <arizonatribe@gmail.com>",
