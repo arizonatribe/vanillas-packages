@@ -18,7 +18,8 @@
   ],
   "scripts": {
     "start": "bin/index.js",
-    "lint": "eslint bin"
+    "format": "eslint bin lib  --fix",
+    "lint": "eslint bin lib"
   },
   "author": "David Nunez <arizonatribe@gmail.com>",
   "homepage": "https://github.com/arizonatribe/vanillas-packages/blob/main/packages/starter/README.md",

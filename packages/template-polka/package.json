@@ -15,6 +15,7 @@
     "scaffolding"
   ],
   "scripts": {
+    "format": "eslint lib --fix",
     "lint": "eslint lib",
     "start": "nodemon lib/server.js | pino-pretty",
     "prod": "node -v && node lib/server.js"
