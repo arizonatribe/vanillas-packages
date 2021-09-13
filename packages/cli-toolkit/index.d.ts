@@ -48,7 +48,7 @@ export function findFirstWhichExists(possibleLocations: string[], baseDir?: stri
  * @param {string} [baseDir] An optional override starting path for resolving the packages folder (otherwise will start from this current directory and traverse upwards to several common, likely locations for the packages)
  * @returns {string|undefined} The path to the packages folder in a multi-package repo (if this is one)
  */
-export function findPackagesFolder(baseDir?: string): string | undefined 
+export function findPackagesFolder(baseDir?: string): string | undefined
 
 /**
  * Locates the (absolute) paths for all the packages in a multi-package repo which are TypeScript packages (specifically to their tsconfig.json manifests)
@@ -69,3 +69,24 @@ export function findTsConfigs(baseDir?: string): string[] | undefined
  * @returns {string|undefined} The path to the tsconfig.json file for this current project package
  */
 export function findCurrentProjectTsConfig(baseDir?: string): string | undefined
+
+/**
+ * Checks if a given file/folder path is an absolute path
+ *
+ * @function
+ * @name isAbsolutePath
+ * @param {string} loc The file/folder location
+ * @returns {boolean} Whether or not the file/folder location is an absolute path
+ */
+export function isAbsolutePath(loc: string): boolean
+
+/**
+ * Resolves a path to a file or folder if is exists
+ *
+ * @function
+ * @name resolvePathIfExists
+ * @param {string} loc The file/folder location
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {string|undefined} The resolved file/folder path (or undefined if it does not exist)
+ */
+export function resolvePathIfExists(loc: string, baseDir?: string): string | undefined

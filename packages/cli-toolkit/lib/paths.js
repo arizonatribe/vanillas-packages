@@ -2,6 +2,39 @@ const fs = require("fs")
 const path = require("path")
 
 /**
+ * Checks if a given file/folder path is an absolute path
+ *
+ * @function
+ * @name isAbsolutePath
+ * @param {string} loc The file/folder location
+ * @returns {boolean} Whether or not the file/folder location is an absolute path
+ */
+function isAbsolutePath(loc) {
+  return /^\//.test(loc)
+}
+
+/**
+ * Resolves a path to a file or folder if is exists
+ *
+ * @function
+ * @name resolvePathIfExists
+ * @param {string} loc The file/folder location
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {string|undefined} The resolved file/folder path (or undefined if it does not exist)
+ */
+function resolvePathIfExists(loc, baseDir) {
+  if (typeof loc !== "string" || !loc.trim()) return undefined
+
+  if (isAbsolutePath(loc)) {
+    return fs.existsSync(loc) ? loc : undefined
+  }
+
+  return fs.existsSync(path.resolve(baseDir || process.cwd(), loc))
+    ? path.resolve(baseDir || process.cwd(), loc)
+    : undefined
+}
+
+/**
  * Locates the first path which exists from a list of possible file paths.
  * Will fall back to `process.cwd()` as its base directory for any relative paths.
  *
@@ -13,9 +46,8 @@ const path = require("path")
  */
 function findFirstWhichExists(possibleLocations, baseDir) {
   return (Array.isArray(possibleLocations) ? possibleLocations : [])
-    .filter(loc => typeof loc === "string")
-    .map(loc => (/^\//.test(loc) ? loc : path.resolve(baseDir || process.cwd(), loc)))
-    .find(loc => fs.existsSync(loc))
+    .map(loc => resolvePathIfExists(loc, baseDir))
+    .find(Boolean)
 }
 
 /**
@@ -120,5 +152,7 @@ module.exports = {
   findCurrentProjectTsConfig,
   findFirstWhichExists,
   findPackagesFolder,
-  findTsConfigs
+  findTsConfigs,
+  isAbsolutePath,
+  resolvePathIfExists
 }
