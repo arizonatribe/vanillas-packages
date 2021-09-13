@@ -1,6 +1,6 @@
 {
   "name": "@vanillas/console-logger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A wrapper around the native Console API but which supports top-down threshold (levels) based control",
   "main": "index.js",
   "license": "MIT",

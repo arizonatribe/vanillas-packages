@@ -14,8 +14,7 @@ export type ThresholdLevels = ThresholdLevel[]
 /**
  * The mapping of threshold level names to numeric (hierarchical) values
  *
- * @name LogLevels
- * @typedef {Object<ThresholdLevel, NumericThresholdLevel>}
+ * @typedef {Object<ThresholdLevel, NumericThresholdLevel>} LogLevels
  * @property {ThresholdLevel} trace
  * @property {ThresholdLevel} debug
  * @property {ThresholdLevel} info
@@ -24,7 +23,7 @@ export type ThresholdLevels = ThresholdLevel[]
  * @property {ThresholdLevel} fatal
  */
 export interface LogLevels {
-  [level: ThresholdLevel] NumericThresholdLevel
+  [level: string]: NumericThresholdLevel
 }
 
 /**
