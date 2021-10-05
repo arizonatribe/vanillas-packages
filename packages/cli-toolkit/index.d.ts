@@ -90,3 +90,68 @@ export function isAbsolutePath(loc: string): boolean
  * @returns {string|undefined} The resolved file/folder path (or undefined if it does not exist)
  */
 export function resolvePathIfExists(loc: string, baseDir?: string): string | undefined
+
+/**
+ * Resolves paths to one or more files/folders using a glob pattern (but only if they exist)
+ *
+ * @function
+ * @name resolveGlobIfExists
+ * @param {string} glob A glob pattern to match
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {Array<string>|undefined} The resolved file/folder paths (or undefined if they don't exist)
+ */
+export function resolveGlobIfExists(glob: string, baseDir?: string): string[] | undefined
+
+/**
+ * A map of interpolation placeholders which serves as the map of placholders to replacment values
+ *
+ * @interface
+ * @typedef {Object<string, string|boolean|number>} InterpolationMap
+ */
+export type InterpolationMap = {
+  [key: string]: string | boolean | number
+}
+
+/**
+ * Interpolates any placholders in a list of files with a set of provided values
+ *
+ * @function
+ * @name interpolate
+ * @param {Array<string>} files A list of one or more files to alter
+ * @param {Object<string, string|boolean|number>} interpolationMap A map of interpolation placeholders which serves as the map of placholders to replacment values
+ */
+export function interpolate(files: string[], interpolationMap: InterpolationMap): void
+
+/**
+ * Executes a given command via the GIT binary
+ *
+ * @function
+ * @name git
+ * @throws {Error} If an error is thrown by Git or if it even writes to stderr
+ * @param {string} command The git command to execute
+ * @param {Array<string>} [args] Additional args to provide to the git command
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {string|undefined} If stdio is set to 'pipe', then the stdout will be returned
+ */
+export function git(command: string, args?: string[], baseDir?: string): string | undefined
+
+/**
+ * Checks a file or folder path to see if the current git repository ignores it
+ *
+ * @function
+ * @name isIgnoredPath
+ * @param {string} fpath The file or folder path to check
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {boolean} Whether or not the specified path is ignored in the current git repository
+ */
+export function isIgnoredPath(fpath: string, baseDir?: string): boolean
+
+/**
+ * Resolves all the file paths in a given repo which are not ignored
+ *
+ * @function
+ * @name resolveRepoIncludedFiles
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {Array<string>} The resolved file paths for all the included (non gitignored) files in the repo
+ */
+export function resolveRepoIncludedFiles(baseDir? string): string[]

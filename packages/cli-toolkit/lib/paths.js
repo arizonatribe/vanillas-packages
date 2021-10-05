@@ -1,5 +1,6 @@
 const fs = require("fs")
 const path = require("path")
+const glob = require("glob")
 
 /**
  * Checks if a given file/folder path is an absolute path
@@ -32,6 +33,30 @@ function resolvePathIfExists(loc, baseDir) {
   return fs.existsSync(path.resolve(baseDir || process.cwd(), loc))
     ? path.resolve(baseDir || process.cwd(), loc)
     : undefined
+}
+
+/**
+ * Resolves paths to one or more files/folders using a glob pattern (but only if they exist)
+ *
+ * @function
+ * @name resolveGlobIfExists
+ * @param {string} g A glob pattern to match
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {Array<string>|undefined} The resolved file/folder paths (or undefined if they don't exist)
+ */
+function resolveGlobIfExists(g, baseDir) {
+  if (typeof g !== "string" || !g.trim()) return undefined
+
+  const options = baseDir && resolvePathIfExists(baseDir)
+    ? { cwd: resolvePathIfExists(baseDir) }
+    : undefined
+
+  const files = glob.sync(g, options)
+  return Array.isArray(files)
+    ? files.map(f => resolvePathIfExists(f, baseDir || process.cwd())).filter(Boolean)
+    : resolvePathIfExists(files)
+      ? [files]
+      : undefined
 }
 
 /**
@@ -154,5 +179,6 @@ module.exports = {
   findPackagesFolder,
   findTsConfigs,
   isAbsolutePath,
+  resolveGlobIfExists,
   resolvePathIfExists
 }
