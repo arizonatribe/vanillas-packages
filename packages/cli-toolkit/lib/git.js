@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+const fs = require("fs")
 const path = require("path")
 const { spawnSync } = require("child_process")
 const { resolvePathIfExists, resolveGlobIfExists } = require("./paths")
@@ -78,7 +79,7 @@ function isIgnoredPath(fpath, baseDir) {
  */
 function resolveRepoIncludedFiles(baseDir) {
   const resolvedFiles = resolveGlobIfExists("*/**", baseDir || process.cwd())
-  return resolvedFiles.filter(f => !/node_modules/.test(f) && !isIgnoredPath(f))
+  return resolvedFiles.filter(f => !/node_modules/.test(f) && !fs.statSync(f).isDirectory() && !isIgnoredPath(f))
 }
 
 module.exports = { git, isIgnoredPath, resolveRepoIncludedFiles }
