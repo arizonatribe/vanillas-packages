@@ -46,14 +46,14 @@ function parseArgs(args) {
     const arg = argv[i]
 
     if (/^--?/.test(arg)) {
-      const [key, val = true] = toCamelCase(arg.replace(/^--?/, "")).split("=")
+      const [key, val = true] = arg.replace(/^--?/, "").split("=")
 
-      options[key] = toArgValue(val)
+      options[toCamelCase(key)] = toArgValue(val)
 
       if (/^([^=]+)=([^=]+)/.test(arg)) {
         lastArgName = undefined
       } else {
-        lastArgName = key
+        lastArgName = toCamelCase(key)
       }
     } else {
       const argVal = toArgValue(arg)
