@@ -1,6 +1,6 @@
 {
   "name": "@vanillas/cli-toolkit",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A suite of helper utilities you can use to create NodeJs scripts",
   "main": "lib/index.js",
   "license": "MIT",

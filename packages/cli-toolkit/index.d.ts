@@ -71,6 +71,16 @@ export function findTsConfigs(baseDir?: string): string[] | undefined
 export function findCurrentProjectTsConfig(baseDir?: string): string | undefined
 
 /**
+ * Builds a list of all the unique file paths at a starting directory, recursively
+ *
+ * @function
+ * @name getFileListRecursive
+ * @param {string} dir The starting directory
+ * @returns {Array<string>} The list of unique file paths at the starting directory
+ */
+export function getFileListRecursive(dir?: string): string[]
+
+/**
  * Checks if a given file/folder path is an absolute path
  *
  * @function

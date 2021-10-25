@@ -76,6 +76,32 @@ function findFirstWhichExists(possibleLocations, baseDir) {
 }
 
 /**
+ * Builds a list of all the unique file paths at a starting directory, recursively
+ *
+ * @function
+ * @name getFileListRecursive
+ * @param {string} dir The starting directory
+ * @returns {Array<string>} The list of unique file paths at the starting directory
+ */
+function getFileListRecursive(dir) {
+  const fileList = []
+
+  fs.readdirSync(dir || process.cwd())
+    .filter(f => !/node_modules/.test(f))
+    .forEach(file => {
+      const filePath = path.resolve(dir, file);
+      (fs.statSync(filePath).isDirectory()
+        ? getFileListRecursive(filePath)
+        : [filePath]
+      ).forEach(f => {
+        fileList.push(f)
+      })
+    })
+
+  return Array.from(new Set(fileList))
+}
+
+/**
  * Locates the (absolute) path for the packages folder in a multi-package repository
  *
  * @function
@@ -179,6 +205,7 @@ module.exports = {
   findPackagesFolder,
   findTsConfigs,
   isAbsolutePath,
+  getFileListRecursive,
   resolveGlobIfExists,
   resolvePathIfExists
 }
