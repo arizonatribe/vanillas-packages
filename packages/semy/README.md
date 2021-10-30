@@ -1,8 +1,6 @@
 # Semy
 
-<h1 align="center">
-	<img width="200" src="logo.png" alt="Semy">
-</h1>
+<img src="media/logo.png" width="200" align="left" hspace="12" />
 
 Set a semantic version value onto the package.json for a NodeJs project (directly or interactively)
 
@@ -16,6 +14,10 @@ Easiest is to launch it interactively, and it'll guide you through the choices:
 npx semy
 ```
 
+<div align="center">
+  <img width="480" src="media/semy-interactive.gif" alt="Semy (interactive)">
+</div>
+
 #### Directlly
 
 Simplest is to set the version directly (non-ineteractive) in one-shot:
@@ -27,6 +29,10 @@ npx semy 1.12.0
 #### Patch, Minor or Major
 
 Create a patch version change directly (non-interactive):
+
+<div align="center">
+  <img width="480" src="media/semy.gif" alt="Semy)">
+</div>
 
 ```
 npx semy --type=patch
@@ -61,6 +67,11 @@ Or revert the local package.json back to the same version on the source branch
 ```
 npx semy --revert
 ```
+
+<div align="center">
+  <img width="480" src="media/semy-revert.gif" alt="Semy --revert">
+</div>
+
 
 Or the same, but specify a different branch than the default (develop):
 
