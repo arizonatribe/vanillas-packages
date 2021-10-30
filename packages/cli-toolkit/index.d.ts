@@ -165,3 +165,15 @@ export function isIgnoredPath(fpath: string, baseDir?: string): boolean
  * @returns {Array<string>} The resolved file paths for all the included (non gitignored) files in the repo
  */
 export function resolveRepoIncludedFiles(baseDir? string): string[]
+
+/**
+ * Retrieves the file content at a given path and git branch
+ *
+ * @function
+ * @name gitFileContent
+ * @param {string} filePath The file path relative to the root of the git project
+ * @param {string} [gitBranch=develop] The git branch to use
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {string|Object<string, any>|undefined} The content of the file at the specified git branch and file path (relative to the git project root). If a JSON file, then JSON is returned
+ */
+export function gitFileContent(filePath, gitBranch = "develop", baseDir): string | AnyObject |  | undefined

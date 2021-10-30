@@ -82,4 +82,22 @@ function resolveRepoIncludedFiles(baseDir) {
   return resolvedFiles.filter(f => !/node_modules/.test(f) && !fs.statSync(f).isDirectory() && !isIgnoredPath(f))
 }
 
-module.exports = { git, isIgnoredPath, resolveRepoIncludedFiles }
+/**
+ * Retrieves the file content at a given path and git branch
+ *
+ * @function
+ * @name gitFileContent
+ * @param {string} filePath The file path relative to the root of the git project
+ * @param {string} [gitBranch=develop] The git branch to use
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {string|Object<string, any>|undefined} The content of the file at the specified git branch and file path (relative to the git project root). If a JSON file, then JSON is returned
+ */
+function gitFileContent(filePath, gitBranch = "develop", baseDir) {
+  const content = git("show", [`origin/${gitBranch}:${filePath}`], baseDir)
+  if (/^[^.]+\.json$/.test(filePath)) {
+    return JSON.parse(content)
+  }
+  return content
+}
+
+module.exports = { git, gitFileContent, isIgnoredPath, resolveRepoIncludedFiles }
