@@ -44,10 +44,11 @@ function git(command, args = [], baseDir) {
   )
 
   if (stderr && stderr.toString().trim()) {
-    console.error(new Error(stderr.toString().trim()))
+    /* Git uses stderr a lot (and the community doubles-down and turns up the cognitive dissonance whenever they've been approached about changing it) */
+    return stderr.toString().trim().replace(/\n$/, "")
   }
 
-  return stdout ? stdout.toString() : undefined
+  return stdout ? stdout.toString().replace(/\n$/, "") : undefined
 }
 
 /**
@@ -93,11 +94,82 @@ function resolveRepoIncludedFiles(baseDir) {
  * @returns {string|Object<string, any>|undefined} The content of the file at the specified git branch and file path (relative to the git project root). If a JSON file, then JSON is returned
  */
 function gitFileContent(filePath, gitBranch = "develop", baseDir) {
-  const content = git("show", [`origin/${gitBranch}:${filePath}`], baseDir)
+  const remote = git("remote", undefined, baseDir)
+  const content = git("show", [`${remote}/${gitBranch}:${filePath}`], baseDir)
   if (/^[^.]+\.json$/.test(filePath)) {
     return JSON.parse(content)
   }
   return content
 }
 
-module.exports = { git, gitFileContent, isIgnoredPath, resolveRepoIncludedFiles }
+/**
+ * Validates a given branch name (case-insensitive) against those of the current git repository
+ *
+ * @function
+ * @name ensureValidGitBranch
+ * @throws {Error} When the branch name is missing or in an invalid format
+ * @throws {Error} When the branch name isn't among those listed for the current repository
+ * @param {string} gitBranch The git branch to validate
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {string} The validated branche name
+ */
+function ensureValidGitBranch(gitBranch, baseDir) {
+  if (gitBranch == null || (typeof gitBranch === "string" && !gitBranch.trim())) {
+    throw new Error("Missing the git branch name")
+  }
+
+  if (typeof gitBranch !== "string" || /\s/.test(gitBranch)) {
+    throw new Error("Invalid format for the git branch. Should be a string without whitespace")
+  }
+
+  const branches = git("branch", ["--list"], baseDir)
+    .split(/\n/)
+    .map(branch => branch.replace(/^\*\s/, ""))
+    .filter(Boolean)
+
+  if (!branches.length) {
+    throw new Error("No branchs found! Make sure this is a git repository")
+  }
+
+  const validatedBranch = branches.find(b => b.toLowerCase() === gitBranch.toLowerCase())
+
+  if (!validatedBranch) {
+    throw new Error(`The '${
+      gitBranch
+    }' branch doesn't exist in this repository.\n Check 'git branch' for the list of available branches`)
+  }
+
+  return validatedBranch
+}
+
+/**
+ * Retrieves the current git branch name
+ *
+ * @function
+ * @name getCurrentBranchName
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {string|undefined} The current branch name (if at a git repository)
+ */
+function getCurrentBranchName(baseDir) {
+  /* --show-current is a newer addition to Git */
+  const currentBranch = git("branch", ["--show-current"], baseDir)
+
+  if (/^Error:/i.test(currentBranch)) {
+    return git("branch", ["--list"], baseDir)
+      .split(/\n/)
+      .filter(branch => /^\*/.test(branch))
+      .map(branch => branch.replace(/^\*\s/, ""))
+      .find(Boolean)
+  }
+
+  return currentBranch
+}
+
+module.exports = {
+  git,
+  gitFileContent,
+  ensureValidGitBranch,
+  getCurrentBranchName,
+  isIgnoredPath,
+  resolveRepoIncludedFiles
+}

@@ -177,3 +177,26 @@ export function resolveRepoIncludedFiles(baseDir?: string): string[]
  * @returns {string|Object<string, any>|undefined} The content of the file at the specified git branch and file path (relative to the git project root). If a JSON file, then JSON is returned
  */
 export function gitFileContent(filePath: string, gitBranch?: string, baseDir?: string): string | AnyObject | undefined
+
+/**
+ * Validates a given branch name (case-insensitive) against those of the current git repository
+ *
+ * @function
+ * @name ensureValidGitBranch
+ * @throws {Error} When the branch name is missing or in an invalid format
+ * @throws {Error} When the branch name isn't among those listed for the current repository
+ * @param {string} gitBranch The git branch to validate
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {string} The validated branche name
+ */
+export function ensureValidGitBranch(gitBranch: string, baseDir?: string): string
+
+/**
+ * Retrieves the current git branch name
+ *
+ * @function
+ * @name getCurrentBranchName
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {string|undefined} The current branch name (if at a git repository)
+ */
+export function getCurrentBranchName(baseDir?: string): string
