@@ -144,6 +144,14 @@ npx semy --info
 
 Note it also shows you what a Major vs Minor vs Patch would look like
 
+#### OpenAPI File Update
+
+In addition to the version updating to the `package.json` manifest, you can supply a file path to an OpenAPI formatted file (yml or json):
+
+```
+npx semy --openapi-path=docs/openapi.yml
+```
+
 #### Help docs
 
 Print out the help docs:
@@ -171,6 +179,8 @@ Options:
   --commit-message The commit message (when using --add-commit).
                    Defaults to 'Update version to x.x.x'
                    Note: Use 'x.x.x' in your commit message override if you want it interpolated.
+
+  --openapi-path   An optional path to an OpenAPI formatted file whose version also needs upating.
   --cwd            An optional working directory to specific (defaults to the directory where the script is being executed)
   --dry-run        To do everything except for actually altering the package.json
   --log-level      The threshold logging leve to use (defaults to info).
@@ -183,6 +193,7 @@ Examples
   $ semy --type=patch
   $ semy --revert
   $ semy --info
+  $ semy --openapi-path=docs/openapi.yml
   $ semy --conventional --add-commit
   $ semy --cwd=../path/to/some/other/repo
   $ semy --commit-message="new version x.x.x"

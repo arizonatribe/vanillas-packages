@@ -9,6 +9,7 @@ const {
   git,
   parseArgs,
   gitFileContent,
+  resolvePathIfExists,
   ensureValidGitBranch,
   getCurrentBranchName,
   getConventionalCommitUpdate
@@ -85,6 +86,7 @@ async function semy() {
   {bold.yellow --commit-message} The commit message (when using {cyan --add-commit}).
                     Defaults to 'Update version to x.x.x'
                     {bold Note}: Use 'x.x.x' in your commit message override if you want it interpolated.
+  {bold.yellow --openapi-path}   An optional path to an {cyan OpenAPI} formatted file whose version also needs upating.
   {bold.yellow --cwd}            An optional working directory to specific (defaults to the directory where the script is being executed)
   {bold.yellow --dry-run}        To do everything except for actually altering the {cyan package.json}
   {bold.yellow --log-level}      The threshold logging leve to use (defaults to {cyan info}).
@@ -97,6 +99,7 @@ async function semy() {
   {bold.gray $ }{bold.cyan semy }{bold.yellow --type}={red patch}
   {bold.gray $ }{bold.cyan semy }{bold.yellow --revert}
   {bold.gray $ }{bold.cyan semy }{bold.yellow --info}
+  {bold.gray $ }{bold.cyan semy }{bold.yellow --openapi-path}={red docs/openapi.yml}
   {bold.gray $ }{bold.cyan semy }{bold.yellow --conventional --add-commit}
   {bold.gray $ }{bold.cyan semy }{bold.yellow --cwd}={red ../path/to/some/other/repo}
   {bold.gray $ }{bold.cyan semy }{bold.yellow --commit-message}={green "new version x.x.x"}
@@ -168,7 +171,7 @@ async function semy() {
     }
 
     /**
-     * Sets the new version on the local package.json, logs it to the console and exits
+     * Sets the new version on the local package.json (optionally an OpenAPI file as well), logs it to the console and exits
      *
      * @function
      * @private
@@ -190,6 +193,22 @@ async function semy() {
       if (!options.dryRun) {
         const localPkgJsonPath = path.resolve(cwd, "./package.json")
         fs.writeFileSync(localPkgJsonPath, JSON.stringify(localPkg, null, 2))
+
+        if (options.openapiPath) {
+          const resolvedOpenApiPath = resolvePathIfExists(options.openapiPath, cwd)
+          const content = resolvedOpenApiPath
+            ? fs.readFileSync(resolvedOpenApiPath, "utf8").toString()
+            : undefined
+
+          if (/\s*"?version"?:\s+"?(\d+\.\d+\.\d+)/i.test(content)) {
+            logger.debug(`Updating ${resolvedOpenApiPath}`)
+
+            fs.writeFileSync(
+              resolvedOpenApiPath,
+              content.replace(/(\s*"?version"?:\s+"?)(\d+\.\d+\.\d+)/i, (_, pref) => [pref, ver].join(""))
+            )
+          }
+        }
 
         if (options.addCommit) {
           const commitMessage = (
