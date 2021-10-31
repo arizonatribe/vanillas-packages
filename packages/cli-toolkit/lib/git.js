@@ -165,11 +165,58 @@ function getCurrentBranchName(baseDir) {
   return currentBranch
 }
 
+/**
+ * Get the current commit hash for a given branch
+ *
+ * @function
+ * @name gitHashForBranch
+ * @param {string} [gitBranch] The branch to retrieve the most recent hash for (defaults to the current branch)
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {string|undefined} The commit hash for the specified branch
+ */
+function gitHashForBranch(gitBranch, baseDir) {
+  const branch = gitBranch
+    ? ensureValidGitBranch(gitBranch)
+    : getCurrentBranchName(baseDir)
+
+  return git("log", ["-n", 1, branch, "--pretty=format:%H"], baseDir)
+}
+
+/**
+ * Determine the kind of semantic versioning update (major, minor, or patch) based on the conventional commit message convention (fix:, feat:, and fix!: or feat!:)
+ * @function
+ * @name getConventionalCommitUpdate
+ * @param {string} startingBranch The branch which is the source of the current version
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {string|undefined} The semantic version update type (ie, 'major', 'minor', 'patch') (defaults to the current branch, but that's rarely what you'd want, so usually you'll specifiy the branch)
+ */
+function getConventionalCommitUpdate(startingBranch, baseDir) {
+  const hash = gitHashForBranch(startingBranch, baseDir)
+
+  if (!hash) {
+    return undefined
+  }
+
+  if (git("log", ["--grep=^(fix|fixed|feat|feature)!:", "-E", "-i", `${hash}^..`], baseDir)) {
+    return "major"
+  }
+  if (git("log", ["--grep=^(feat|feature):", "-E", "-i", `${hash}^..`], baseDir)) {
+    return "minor"
+  }
+  if (git("log", ["--grep=^(fix|fixed):", "-E", "-i", `${hash}^..`], baseDir)) {
+    return "patch"
+  }
+
+  return undefined
+}
+
 module.exports = {
   git,
   gitFileContent,
   ensureValidGitBranch,
   getCurrentBranchName,
+  gitHashForBranch,
+  getConventionalCommitUpdate,
   isIgnoredPath,
   resolveRepoIncludedFiles
 }

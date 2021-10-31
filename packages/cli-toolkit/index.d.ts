@@ -4,6 +4,15 @@ interface AnyObject {
 
 export type ArgValue = string | number | boolean | string[] | number [] | boolean[] | AnyObject[] | AnyObject
 
+/**
+ * The kind of semantic versioning update
+ *
+ * @enum
+ * @name SemverUpdateType
+ * @type {string}
+ */
+export type SemverUpdateType = 'major' | 'minor' | 'patch'
+
 export interface ParsedArgs {
   [key: string]: ArgValue
 }
@@ -200,3 +209,13 @@ export function ensureValidGitBranch(gitBranch: string, baseDir?: string): strin
  * @returns {string|undefined} The current branch name (if at a git repository)
  */
 export function getCurrentBranchName(baseDir?: string): string
+
+/**
+ * Determine the kind of semantic versioning update (major, minor, or patch) based on the conventional commit message convention (fix:, feat:, and fix!: or feat!:)
+ * @function
+ * @name getConventionalCommitUpdate
+ * @param {string} [startingBranch] The branch which is the source of the current version (defaults to the current branch, but that's rarely what you'd want, so usually you'll specifiy the branch)
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {SemverUpdateType|undefined} The semantic version update type (ie, 'major', 'minor', 'patch')
+ */
+export function getConventionalCommitUpdate(startingBranch?: string, baseDir?: string): SemverUpdateType | undefined
