@@ -68,6 +68,47 @@ Packages (not apps) are often single-branched projects or when they are not, you
 npx semy --branch=main
 ```
 
+#### Conventional Commit
+
+A [Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/) is a prefixing pattern for git commit messages which can be used to drive automation scripts (especially in CI/CD pipelines) that set the semantic version for you.
+
+This prefixing convention for git commit messages is extremely simple, basically just this:
+ - `fix:` - means a patch update
+ - `feat:` - means a minor update
+ - `feat!:` or `fix!:` - means a major update
+
+Here's a couple of example git commit messages which follow that convention:
+
+```
+feat: Added a new helper util function to determine git (current) commit hashes by a given branch name.
+```
+
+That `feat:` prefix would signify a __minor__ semantic version change. For example, bumping from __1.3.9__ to __1.40__
+
+Here's an example of a patch change convention:
+
+```
+fix: A divide by zero error in the summary calculator function. Wrote a test to make sure the bug doesn't happen again.
+```
+
+And lastly a __major__ update would just being either that `fix` or `feat` prefix followed by the exclamation mark `!`:
+
+```
+feat!: Rolling out the refactor from Perl to TypeScript
+```
+
+And to take advantage of that git commit convention to bump a version, just supply the `--conventional` flag and it'll take precedence (and _not_ apply any change if there are no matches)
+
+```
+npx semy --conventional
+```
+
+if you publish from the `develop` branch, that's all you need, but otherwise you'll always want to provide the `--branch` flag:
+
+```
+npx semy --branch=main --conventional
+```
+
 #### Revert
 
 Or revert the local package.json back to the same version on the source branch
@@ -110,7 +151,7 @@ Print out the help docs:
 ```
 npx semy --help
 
-Set a semantic version value onto the package.json for a NodeJs project
+Set a semantic version value onto the package.json for a NodeJs project (direct ly or interactively)
 
 Options:
   --type           The kind of semantic version increment. Choices are patch (default), minor, or major.
@@ -119,7 +160,17 @@ Options:
                    (except for single branch projects).
   --revert         Set the version field in the local package.json to match that of the source branch
                    (specified by --branch, defaulting to develop)
-  --info           Maybe you only want to compare the local {cyan package.json} with that of a branch and see what the major/minor/patch updates would be.
+  --conventional   An optional way to determine and apply the semver update is to use Conventional Commits:
+                   https://www.conventionalcommits.org/en/v1.0.0/
+                   Which is git commits whose leading prefixes determin update types:
+                     fix:  - means a patch update
+                     feat: - means a minor update
+                     feat!: or fix!:  - means a major update
+  --info           Maybe you only want to compare the local package.json with that of a branch and see what the major/minor/patch updates would be.
+  --add-commit     Whether to auto-add the commit after making the semver change (defaults to true).
+  --commit-message The commit message (when using --add-commit).
+                   Defaults to 'Update version to x.x.x'
+                   Note: Use 'x.x.x' in your commit message override if you want it interpolated.
   --cwd            An optional working directory to specific (defaults to the directory where the script is being executed)
   --dry-run        To do everything except for actually altering the package.json
   --log-level      The threshold logging leve to use (defaults to info).
@@ -132,7 +183,9 @@ Examples
   $ semy --type=patch
   $ semy --revert
   $ semy --info
+  $ semy --conventional --add-commit
   $ semy --cwd=../path/to/some/other/repo
+  $ semy --commit-message="new version x.x.x"
 ```
 
 ## How this kind of scripting can help

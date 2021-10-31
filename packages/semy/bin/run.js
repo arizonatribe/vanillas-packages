@@ -10,7 +10,8 @@ const {
   parseArgs,
   gitFileContent,
   ensureValidGitBranch,
-  getCurrentBranchName
+  getCurrentBranchName,
+  getConventionalCommitUpdate
 } = require("@vanillas/cli-toolkit")
 
 /**
@@ -73,7 +74,17 @@ async function semy() {
                    (except for single branch projects).
   {bold.yellow --revert}         Set the {cyan version} field in the local {yellow package.json} to match that of the source branch
                    (specified by {cyan --branch}, defaulting to {yellow develop})
+  {bold.yellow --conventional}   An optional way to determine and apply the semver update is to use Conventional Commits:
+                   https://www.conventionalcommits.org/en/v1.0.0/
+                   Which is git commits whose leading prefixes determin update types:
+                     {red fix:}  - means a {cyan patch} update
+                     {red feat:} - means a {cyan minor} update
+                     {red feat}{bold.red !}{red :} {bold or} {red fix}{bold.red !}{red :}  - means a {cyan major} update
   {bold.yellow --info}           Maybe you only want to compare the local {cyan package.json} with that of a branch and see what the major/minor/patch updates would be.
+  {bold.yellow --add-commit}     Whether to auto-add the commit after making the semver change (defaults to {cyan true}).
+  {bold.yellow --commit-message} The commit message (when using {cyan --add-commit}).
+                    Defaults to 'Update version to x.x.x'
+                    {bold Note}: Use 'x.x.x' in your commit message override if you want it interpolated.
   {bold.yellow --cwd}            An optional working directory to specific (defaults to the directory where the script is being executed)
   {bold.yellow --dry-run}        To do everything except for actually altering the {cyan package.json}
   {bold.yellow --log-level}      The threshold logging leve to use (defaults to {cyan info}).
@@ -86,7 +97,9 @@ async function semy() {
   {bold.gray $ }{bold.cyan semy }{bold.yellow --type}={red patch}
   {bold.gray $ }{bold.cyan semy }{bold.yellow --revert}
   {bold.gray $ }{bold.cyan semy }{bold.yellow --info}
+  {bold.gray $ }{bold.cyan semy }{bold.yellow --conventional --add-commit}
   {bold.gray $ }{bold.cyan semy }{bold.yellow --cwd}={red ../path/to/some/other/repo}
+  {bold.gray $ }{bold.cyan semy }{bold.yellow --commit-message}={green "new version x.x.x"}
     `)
     /* eslint-enable max-len */
     process.exit(0)
@@ -164,9 +177,30 @@ async function semy() {
      */
     function setVersionAndExit(ver) {
       localPkg.version = ver
+      const [currentMaj, currentMin] = currentVersion.split(/\./)
+      const [newMaj, newMin] = ver.split(/\./)
+      const updateType = +newMaj > +currentMaj
+        ? "major"
+        : +newMin > +currentMin
+          ? "minor"
+          : "patch"
+
+      logger.debug({ updateType, newVersion: ver, currentVersion })
 
       if (!options.dryRun) {
-        fs.writeFileSync(path.resolve(cwd, "./package.json"), JSON.stringify(localPkg, null, 2))
+        const localPkgJsonPath = path.resolve(cwd, "./package.json")
+        fs.writeFileSync(localPkgJsonPath, JSON.stringify(localPkg, null, 2))
+
+        if (options.addCommit) {
+          const commitMessage = (
+            options.commitMessage || `${updateType}: update version to x.x.x`
+          ).replace(/x\.\x\.x/i, ver)
+
+          logger.debug(commitMessage)
+
+          git("add", [localPkgJsonPath], cwd)
+          git("commit", ["-m", commitMessage, '--no-verify'], cwd)
+        }
       }
 
       if (currentVersion === ver) {
@@ -176,7 +210,9 @@ async function semy() {
           currentVersion
         }} ✅`)
       } else {
-        logger.info(chalk => chalk`Changed version for {yellow ${
+        logger.info(chalk => chalk`Applied ${
+          updateType
+        } version update for {yellow ${
           localPkg.name
         }} from {red ${
           currentVersion
@@ -234,10 +270,30 @@ async function semy() {
 
     logger.debug(summary)
 
-
     let newVersion
-    /* Jump into interactive mode, if the --type flag wasn't used */
-    if (options.type == null) {
+
+    if (options.conventional) {
+      const conventionalUpdate = getConventionalCommitUpdate(branch, cwd)
+
+      newVersion = /^major$/i.test(conventionalUpdate)
+        ? majorChange
+        : /^minor/i.test(conventionalUpdate)
+          ? minorChange
+          : /^patch/i.test(conventionalUpdate)
+            ? patchChange
+            : undefined
+
+      if (!newVersion) {
+        logger.info(chalk => chalk`No pending semver updates found since last merge to the {cyan ${
+          branch
+        }} branch 👍.\nLeaving at version {red ${
+          currentVersion
+        }}`)
+
+        process.exit(0)
+      }
+    } else if (options.type == null) {
+      /* Jump into interactive mode, if the --type flag wasn't used */
       const choices = [
         semver.valid(patchChange) && {
           title: `Patch (${patchChange})`,
@@ -271,7 +327,9 @@ async function semy() {
         ? majorChange
         : /^minor$/i.test(options.type)
           ? minorChange
-          : patchChange
+          : /^patch/i.test(options.type)
+            ? patchChange
+            : undefined
     }
 
     if (!newVersion) {
