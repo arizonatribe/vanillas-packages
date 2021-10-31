@@ -1,11 +1,11 @@
 # Semy
 
 <img src="media/logo.png" width="200" align="left" hspace="12" />
-<p align="left">(pronounced "SEM-ee")</p>
+<p align="left">Semy - (pronounced "SEM-ee")</p>
 
 Set a semantic version value onto the package.json for a NodeJs project (directly or interactively)
 
-##### Possible ways to use this tool:
+### Possible ways to use this tool:
 
 * In a [husky](https://www.npmjs.com/package/husky) pre-commit hook
 * In a CI/CD pipeline (non-ineteractive mode)
