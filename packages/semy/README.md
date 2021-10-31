@@ -1,6 +1,6 @@
 # Semy
 
-<img src="packages/semy/media/logo.png" width="200" align="left" hspace="12" />
+<img src="media/logo.png" width="200" align="left" hspace="12" />
 <p align="left">(pronounced "SEM-ee")</p>
 
 Set a semantic version value onto the package.json for a NodeJs project (directly or interactively)
@@ -20,7 +20,7 @@ npx semy
 ```
 
 <div align="center">
-  <img width="480" src="packages/semy/media/semy-interactive.gif" alt="Semy (interactive)">
+  <img width="480" src="media/semy-interactive.gif" alt="Semy (interactive)">
 </div>
 
 #### Directlly
@@ -42,7 +42,7 @@ npx semy --type=patch
 ```
 
 <div align="center">
-  <img width="480" src="packages/semy/media/semy.gif" alt="Semy)">
+  <img width="480" src="media/semy.gif" alt="Semy)">
 </div>
 
 
@@ -77,7 +77,7 @@ npx semy --revert
 ```
 
 <div align="center">
-  <img width="480" src="packages/semy/media/semy-revert.gif" alt="Semy --revert">
+  <img width="480" src="media/semy-revert.gif" alt="Semy --revert">
 </div>
 
 
