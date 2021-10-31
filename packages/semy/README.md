@@ -1,9 +1,19 @@
 # Semy
 
 <img src="media/logo.png" width="200" align="left" hspace="12" />
-<p align="left">Semy - (pronounced "SEM-ee")</p>
 
-Set a semantic version value onto the package.json for a NodeJs project (directly or interactively)
+* Interactive mode (for manual versioning)
+* Supports [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) messages
+* Or supports an exact version
+* Or supports the major/minor/patch label
+* Compare against a specific local/upstream branch
+* Revert to the local/remote branch's version
+* Dry-run, help docs, summary stats
+* Optionally set the version an OpenAPI (aka Swagger) doc
+
+__Semy__ (pronounced _"SEM-ee"_) is a tool for setting a semantic version value onto the `package.json` and/or an OpenAPI doc for a NodeJs project (directly or interactively).
+
+---
 
 ### Possible ways to use this tool:
 
@@ -23,7 +33,7 @@ npx semy
   <img width="480" src="media/semy-interactive.gif" alt="Semy (interactive)">
 </div>
 
-#### Directlly
+#### Directly
 
 Simplest is to set the version directly (non-ineteractive) in one-shot:
 
@@ -223,11 +233,3 @@ The solutions to this problem are a mix of tools and techniques, including some 
 * using branch merging conventions to determine whether a major, minor or patch updates
 
 This tool is an attempt to add onto that toolkit some shell scripting focused on easier manual and automated versioning of NodeJs package manifest/config files.
-
-* Better manual versioning - Interactive and flexible scripting options
-* Flexible automated usage
-    * Pass in an exact version
-    * Pass in the major/minor/patch label instead
-    * Compare against a specific local/upstream branch
-    * Revert to the local/remote branch's version
-    * Dry-run, help docs
