@@ -199,7 +199,7 @@ async function semy() {
           logger.debug(commitMessage)
 
           git("add", [localPkgJsonPath], cwd)
-          git("commit", ["-m", commitMessage, '--no-verify'], cwd)
+          git("commit", ["-m", commitMessage, "--no-verify"], cwd)
         }
       }
 
