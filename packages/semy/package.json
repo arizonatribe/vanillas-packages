@@ -1,6 +1,6 @@
 {
   "name": "semy",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Set a semantic version value onto the package.json for a NodeJs project (directly or interactively)",
   "main": "bin/run.js",
   "license": "MIT",
