@@ -1,6 +1,6 @@
 # Semy
 
-<img src="https://raw.githubusercontent.com/arizonatribe/vanillas-packages/main/packages/semy/media/logo.png" width="200" align="left" hspace="12" />
+<img src="https://raw.githubusercontent.com/arizonatribe/vanillas-packages/main/packages/semy/media/logo.png" width="200" align="left" hspace="12" style="margin-right: 32px;" />
 
 * Interactive mode (for manual versioning)
 * Supports [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) messages
@@ -70,6 +70,25 @@ npx semy --type=major
 
 And although it's recommended to use the `--type=patch|minor|major` flag instead, you can optionally specify `--patch`, `--minor` or `--major` (would get weird if you combined them though, so it's not listed in the `--help` docs).
 
+#### Revert
+
+Or revert the local package.json back to the same version on the source branch
+
+```
+npx semy --revert
+```
+
+<div align="center">
+  <img width="480" src="https://raw.githubusercontent.com/arizonatribe/vanillas-packages/main/packages/semy/media/semy-revert.gif" alt="Semy --revert">
+</div>
+
+
+Or the same, but specify a different branch than the default (develop):
+
+```
+npx semy --revert --branch=main
+```
+
 #### Different Branch
 
 Packages (not apps) are often single-branched projects or when they are not, you still publish only from one branch (this ain't Java). And while `develop` is a common branch to settle on as the default, just use the `--branch` flag to specify a different one to use as the basis for the published `package.json`.
@@ -79,6 +98,8 @@ npx semy --branch=main
 ```
 
 #### Conventional Commit
+
+You can forgo the `--type` flag, the interative menur or passing a semver (ie, `1.5.9`) directly, and instead let the versioning be driven by _conventional_ git commit messages. This can fit well into CI/CD pipelines or pre-push Git hooks (especially combined with the `--add-commit` flag).
 
 A [Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/) is a prefixing pattern for git commit messages which can be used to drive automation scripts (especially in CI/CD pipelines) that set the semantic version for you.
 
@@ -93,7 +114,7 @@ Here's a couple of example git commit messages which follow that convention:
 feat: Added a new helper util function to determine git (current) commit hashes by a given branch name.
 ```
 
-That `feat:` prefix would signify a __minor__ semantic version change. For example, bumping from __1.3.9__ to __1.40__
+That `feat:` prefix would signify a __minor__ semantic version change. For example, bumping from __1.3.9__ to __1.4.0__
 
 Here's an example of a patch change convention:
 
@@ -117,25 +138,6 @@ if you publish from the `develop` branch, that's all you need, but otherwise you
 
 ```
 npx semy --branch=main --conventional
-```
-
-#### Revert
-
-Or revert the local package.json back to the same version on the source branch
-
-```
-npx semy --revert
-```
-
-<div align="center">
-  <img width="480" src="https://raw.githubusercontent.com/arizonatribe/vanillas-packages/main/packages/semy/media/semy-revert.gif" alt="Semy --revert">
-</div>
-
-
-Or the same, but specify a different branch than the default (develop):
-
-```
-npx semy --revert --branch=main
 ```
 
 #### Simple summary report
@@ -189,11 +191,10 @@ Options:
   --commit-message The commit message (when using --add-commit).
                    Defaults to 'Update version to x.x.x'
                    Note: Use 'x.x.x' in your commit message override if you want it interpolated.
-
   --openapi-path   An optional path to an OpenAPI formatted file whose version also needs upating.
-  --cwd            An optional working directory to specific (defaults to the directory where the script is being executed)
-  --dry-run        To do everything except for actually altering the package.json
-  --log-level      The threshold logging leve to use (defaults to info).
+  --cwd            An optional working directory to use as the basis (defaults to the directory where the script is being executed)
+  --dry-run        To do everything except for actually altering the package.json/openapi file(s)
+  --log-level      The threshold logging level to use (defaults to info).
 
 Examples
   $ semy

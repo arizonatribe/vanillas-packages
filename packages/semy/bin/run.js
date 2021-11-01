@@ -84,10 +84,10 @@ async function semy() {
   {bold.yellow --info}           Maybe you only want to compare the local {cyan package.json} with that of a branch and see what the major/minor/patch updates would be.
   {bold.yellow --add-commit}     Whether to auto-add the commit after making the semver change (defaults to {cyan true}).
   {bold.yellow --commit-message} The commit message (when using {cyan --add-commit}).
-                    Defaults to 'Update version to x.x.x'
-                    {bold Note}: Use 'x.x.x' in your commit message override if you want it interpolated.
+                   Defaults to 'Update version to x.x.x'
+                   {bold Note}: Use 'x.x.x' in your commit message override if you want it interpolated.
   {bold.yellow --openapi-path}   An optional path to an {cyan OpenAPI} formatted file whose version also needs upating.
-  {bold.yellow --cwd}            An optional working directory to specific (defaults to the directory where the script is being executed)
+  {bold.yellow --cwd}            An optional working directory to use as the basis (defaults to the directory where the script is being executed)
   {bold.yellow --dry-run}        To do everything except for actually altering the {cyan package.json}
   {bold.yellow --log-level}      The threshold logging leve to use (defaults to {cyan info}).
 
