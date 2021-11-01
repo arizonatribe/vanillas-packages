@@ -63,7 +63,28 @@ function copyNestedPackagesFolder(packagesFolder = "packages", nestedFolder = "d
   return copiedPaths
 }
 
+/**
+ * Renames a given file/folder path if it exists
+ *
+ * @function
+ * @name renameIfExists
+ * @param {string} oldPath The existing file/folder location
+ * @param {string} newPath The new file/folder location
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {string|undefined} The renamed file/folder path (or undefined if it did not exist to begin with)
+ */
+function renameIfExists(oldPath, newPath, baseDir) {
+  const resolvedPath = resolvePathIfExists(oldPath, baseDir)
+  if (resolvedPath) {
+    fs.moveSync(oldPath, newPath, { overwrite: true })
+    return resolvePathIfExists(newPath, baseDir)
+  }
+
+  return undefined
+}
+
 module.exports = {
   copyFolder,
+  renameIfExists,
   copyNestedPackagesFolder
 }

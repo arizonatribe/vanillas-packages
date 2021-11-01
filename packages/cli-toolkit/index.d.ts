@@ -11,7 +11,7 @@ export type ArgValue = string | number | boolean | string[] | number [] | boolea
  * @name SemverUpdateType
  * @type {string}
  */
-export type SemverUpdateType = 'major' | 'minor' | 'patch'
+export type SemverUpdateType = "major" | "minor" | "patch"
 
 export interface ParsedArgs {
   [key: string]: ArgValue
@@ -219,3 +219,41 @@ export function getCurrentBranchName(baseDir?: string): string
  * @returns {SemverUpdateType|undefined} The semantic version update type (ie, 'major', 'minor', 'patch')
  */
 export function getConventionalCommitUpdate(startingBranch?: string, baseDir?: string): SemverUpdateType | undefined
+
+/**
+ * Copies a source folder to a destination path (overwriting anything already existing at the destination)
+ *
+ * @function
+ * @name copyFolder
+ * @param {string} srcPath The source folder to be copied
+ * @param {string} destPath The desination folder where the source folder is being copied to
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {string} The full (absolute) desination path where the copying completed
+ */
+export function copyFolder(srcPath: string, destPath: string, baseDir?: string): string | undefined
+
+/**
+ * Renames a given file/folder path if it exists
+ *
+ * @function
+ * @name renameIfExists
+ * @param {string} oldPath The existing file/folder location
+ * @param {string} newPath The new file/folder location
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {string|undefined} The renamed file/folder path (or undefined if it did not exist to begin with)
+ */
+export function renameIfExists(oldPath: string, newPath: string, baseDir?: string): string | undefined
+
+/**
+ * Copies a folder nested nested inside one or more packages folders
+ *
+ * @function
+ * @name copyNestedPackagesFolder
+ * @throws {Error} When the packages folder doesn't exist
+ * @throws {Error} When no nested folders are found in the packages folder
+ * @param {string} [packagesFolder=packages] The packages sub-folder name (defaults to ./packages)
+ * @param {string} [nestedFolder=docs] The folder nested across one or more packages folders
+ * @param {string} [baseDir=process.cwd()] The base directory from which to resolve any relative file paths
+ * @returns {Array<string>} The list of copied (absolute) paths
+ */
+export function copyNestedPackagesFolder(packagesFolder: string, nestedFolder: string, baseDir?: string): string[]
