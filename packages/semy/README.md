@@ -1,6 +1,6 @@
 # Semy
 
-<img src="https://raw.githubusercontent.com/arizonatribe/vanillas-packages/main/packages/semy/media/logo.png" width="200" align="left" hspace="12" style="margin-right: 32px;" />
+<img src="https://raw.githubusercontent.com/arizonatribe/vanillas-packages/main/packages/semy/media/logo.png" width="200" height="73" align="left" hspace="12" style="margin-right: 32px;" />
 
 * Interactive mode (for manual versioning)
 * Supports [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) messages
