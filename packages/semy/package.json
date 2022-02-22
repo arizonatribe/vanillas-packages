@@ -1,6 +1,6 @@
 {
   "name": "semy",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Set a semantic version value onto the package.json for a NodeJs project (directly or interactively)",
   "main": "bin/run.js",
   "license": "MIT",
@@ -25,7 +25,7 @@
     "lint": "eslint bin"
   },
   "author": "David Nunez <arizonatribe@gmail.com>",
-  "homepage": "https://github.com/arizonatribe/vanillas-packages/blob/main/packages/semy/README.md",
+  "homepage": "https://github.com/arizonatribe/vanillas-packages/blob/main/packages/semy",
   "repository": {
     "type": "git",
     "url": "git@github.com:arizonatribe/vanillas-packages.git"
