@@ -34,6 +34,8 @@
     "chalk": "^4.1.2"
   },
   "devDependencies": {
-    "@vanillas/eslint-config": "^1.0.0"
+    "@vanillas/eslint-config": "^1.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^4.1.3"
   }
 }

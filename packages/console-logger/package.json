@@ -29,7 +29,9 @@
     "url": "git@github.com:arizonatribe/vanillas-packages.git"
   },
   "devDependencies": {
-    "@vanillas/eslint-config": "^1.0.0"
+    "@vanillas/eslint-config": "^1.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^4.1.3"
   },
   "gitHead": "68746089118fda32b7dc3094c03a77c82b14ddc9"
 }

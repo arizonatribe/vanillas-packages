@@ -5,7 +5,7 @@
   "description": "JavaScript and TypeScript tools and templates for building applications",
   "license": "MIT",
   "engines": {
-    "node": ">=12.17.0"
+    "node": ">=14.0.0"
   },
   "keywords": [
     "project scaffolding",
@@ -29,9 +29,9 @@
     "url": "https://github.com/arizonatribe/@vanillas.git"
   },
   "devDependencies": {
-    "eslint": "^7.28.0",
+    "eslint": "^8.0.0",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jsdoc": "^30.7.3",
     "husky": "^7.0.0",
     "lerna": "^4.0.0"

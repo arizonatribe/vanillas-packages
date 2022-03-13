@@ -37,7 +37,9 @@
   },
   "devDependencies": {
     "@vanillas/eslint-config": "^1.0.0",
-    "nodemon": "^2.0.7"
+    "eslint": "^8.0.0",
+    "nodemon": "^2.0.7",
+    "typescript": "^4.1.3"
   },
   "gitHead": "8a702a08e6bbf36ea0546c706ad3c52247a4a8d6"
 }
