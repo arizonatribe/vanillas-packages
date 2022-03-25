@@ -1,6 +1,6 @@
 {
   "name": "@vanillas/template-express-typescript",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A TypeScript scaffolding template for ExpressJs REST APIs",
   "main": "lib/server.js",
   "license": "MIT",
@@ -19,6 +19,7 @@
   "scripts": {
     "format": "eslint src --fix",
     "lint": "eslint src",
+    "prepare": "npm run build",
     "start": "nodemon src/server.ts | pino-pretty",
     "build": "tsc --project tsconfig.build.json",
     "prod": "node -v && node lib/server.js"
