@@ -1,11 +1,11 @@
-const helmet = require("helmet")
-const express = require("express")
-const createLogger = require("pino")
-const compression = require("compression")
+import helmet from "helmet"
+import express from "express"
+import createLogger from "pino"
+import compression from "compression"
 
-const config = require("./config")
-const createRoutes = require("./routes")
-const createMiddleware = require("./middleware")
+import config from "./config"
+import createRoutes from "./routes"
+import createMiddleware, { Middleware } from "./middleware"
 
 const { name, level, apiVersion, shouldPrettyPrint, isProduction } = config
 
@@ -13,11 +13,12 @@ const logger = createLogger({ level, prettyPrint: shouldPrettyPrint, name })
 
 const {
   globalErrorHandler,
-  unsupportedEndpointHandler,
   allowCrossDomainMiddleware,
+  unsupportedEndpointHandler,
   ...middleware
 } = createMiddleware(config, logger)
-const routes = createRoutes(middleware)
+
+const routes = createRoutes(middleware as Middleware)
 
 const app = express()
   .use(express.urlencoded({ extended: false, limit: "6mb" }))
@@ -31,11 +32,10 @@ if (!isProduction) {
   app.use(allowCrossDomainMiddleware)
 }
 
-app
-  .use(`/${apiVersion}`, routes)
+app.use(`/${apiVersion}`, routes)
   .use(globalErrorHandler)
   .use("*", unsupportedEndpointHandler)
   .use("/", unsupportedEndpointHandler)
 
-module.exports = app
-module.exports.app = app
+export { app }
+export default app

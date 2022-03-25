@@ -4,11 +4,29 @@
  * @function
  * @name createMiddleware
  * @param {Object<string, any>} config The application configuration settings
- * @param {Object<string, function>} _logger An instance of a threshold-based logger
+ * @param {Object<string, function>} logger An instance of a threshold-based logger
  * @returns {Object<string, function>} The middleware functions ready to be bound to the app
  */
-function createMiddleware(config, _logger) {
+function createMiddleware(config, logger) {
   const { version, name } = config
+
+  /**
+   * A piece of middleware which will allow inbound requests from _any_ source regardless of its origin.
+   * This should only be used in local development or in cases where there is 100% guarantee that the source is trusted
+   * (due to where the API sits in your infrastructure, most likely).
+   *
+   * @function
+   * @name allowCrossDomainMiddleware
+   * @param {Object<string, any>} _ The connect middleware HTTP request object
+   * @param {Object<string, function>} res The connect middleware HTTP response object whose methods are used to resolve the middleware chain and send a true HTTP response back to the caller
+   * @param {function} next The reserved Express/connect middleware helper function which pushes execution forward (or triggers your error handler if you pass it an `Error` instance)
+   */
+  function allowCrossDomainMiddleware(_, res, next) {
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE")
+    res.header("Access-Control-Allow-Headers", "Content-Type")
+    next()
+  }
 
   /**
    * Displays application uptime and basic application metadata
@@ -42,6 +60,7 @@ function createMiddleware(config, _logger) {
    * @param {function} _ The `next` middleware function which pushes execution forward in the chain (unused in a global error handler but necessary to name in the function params due to the way Express identifies this as an error handler - with four function params - rather than a normal middleware function)
    */
   function globalErrorHandler(err, _request, res, _) {
+    logger.error(err)
     res.status(err.extensions && err.extensions.code).json({
       success: false,
       message: err.message,
@@ -59,6 +78,8 @@ function createMiddleware(config, _logger) {
    * @param {function} _ The `next` middleware function which normally pushes execution forward but is unused here at a catch-all function
    */
   function unsupportedEndpointHandler(req, res, _) {
+    logger.warn(`${req.method.toUpperCase()} request for unsupported endpoint: ${req.originalUrl}`)
+
     res.status(404).json({
       success: false,
       message: `The endpoint '${
@@ -72,6 +93,7 @@ function createMiddleware(config, _logger) {
   return {
     healthCheck,
     globalErrorHandler,
+    allowCrossDomainMiddleware,
     unsupportedEndpointHandler
   }
 }

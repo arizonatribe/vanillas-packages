@@ -1,6 +1,6 @@
-# Vanilla ExpressJs template
+# TypeScript Express template
 
-This is a base ExpressJs REST API application upon which you can create new endpoints, to help reduce the time needed to setup common boilerplate files.
+This is a base Express (TypeScript) REST API application upon which you can create new endpoints, to help reduce the time needed to setup common boilerplate files.
 
 # Install
 

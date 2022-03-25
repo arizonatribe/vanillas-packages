@@ -6,8 +6,9 @@ const { spawnSync } = require("child_process")
 const logger = require("@vanillas/console-logger")
 
 const templates = [
-  { title: "ExpressJs", value: "express" },
-  { title: "PolkaJs", value: "polka" }
+  { title: "Express (JavaScript)", value: "express" },
+  { title: "Express (TypeScript)", value: "express-typescript" },
+  { title: "Polka (JavaScript)", value: "polka" }
 ]
 
 /**

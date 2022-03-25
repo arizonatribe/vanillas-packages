@@ -4,10 +4,10 @@ This is a base PolkaJs REST API application upon which you can create new endpoi
 
 # Install
 
-Scaffold the project using `npx` (or you can globally install `create-vanilla-polka` and invoke the command below without `npx`) 
+Scaffold the project using `npx` (or you can globally install `create-vanillas-app` and invoke the command below without `npx`) 
 
 ```
-# npx create-vanilla-polka my-app
+# npx create-vanillas-app my-app
 # cd my-app
 # npm start
 ```
