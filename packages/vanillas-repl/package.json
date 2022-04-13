@@ -1,0 +1,40 @@
+{
+  "name": "vanillas-repl",
+  "version": "1.0.0",
+  "description": "Runs a NodeJs REPL with the Vanillas utils library loaded into the REPL context",
+  "main": "bin/run.js",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=12.17.0"
+  },
+  "bin": {
+    "vrepl": "bin/run.js",
+    "vanillas": "bin/run.js",
+    "vanillas-repl": "bin/run.js"
+  },
+  "keywords": [
+    "vanillas",
+    "repl",
+    "utils"
+  ],
+  "scripts": {
+    "start": "bin/run.js",
+    "format": "eslint bin  --fix",
+    "lint": "eslint bin"
+  },
+  "author": "David Nunez <arizonatribe@gmail.com>",
+  "homepage": "https://github.com/arizonatribe/vanillas-packages/blob/main/packages/vanillas-repl",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:arizonatribe/vanillas-packages.git"
+  },
+  "dependencies": {
+    "vanillas": "^1.5.0"
+  },
+  "devDependencies": {
+    "@vanillas/eslint-config": "^1.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^4.1.3"
+  }
+}
