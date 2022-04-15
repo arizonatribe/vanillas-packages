@@ -1,5 +1,30 @@
-interface AnyObject {
+export interface AnyObject {
   [key: string]: any | AnyObject
+}
+
+/**
+ * Parsed JSDoc AST
+ *
+ * @interface
+ * @typedef {Object<string, any>} JSDocAst
+ * @property {string} name
+ * @property {string} longname
+ * @property {string} description
+ * @property {string} comment
+ * @property {string} scope
+ * @property {string} kind
+ * @property {Array<Object<string, any>>} [params]
+ * @property {Array<Object<string, any>>} [returns]
+ */
+export interface JSDocAst {
+  name: string
+  longname: string
+  description: string
+  comment: string
+  scope: string
+  kind: string
+  params?: AnyObject[]
+  returns?: AnyObject[]
 }
 
 export type ArgValue = string | number | boolean | string[] | number [] | boolean[] | AnyObject[] | AnyObject
@@ -257,3 +282,36 @@ export function renameIfExists(oldPath: string, newPath: string, baseDir?: strin
  * @returns {Array<string>} The list of copied (absolute) paths
  */
 export function copyNestedPackagesFolder(packagesFolder: string, nestedFolder: string, baseDir?: string): string[]
+
+/**
+ * Resolves the JSDoc binary location (if exists)
+ *
+ * @function
+ * @name resolveJsDocBin
+ * @throws {Error} When unable to resolve the JSDoc binary
+ * @param {string} [cwd=process.cwd()] The directory from which to check for the install JSDoc binary
+ * @returns {string} The relative or absolute path to the JSDoc binary
+ */
+export function resolveJsDocBin(cwd?: string): string
+
+/**
+ * Parses the JSDoc comments from a given file
+ *
+ * @function
+ * @name parseJsDocAst
+ * @param {string} filePath The path to the JavaScript file itself
+ * @param {string} [jsDocBin=jsdoc] The path to the JSDoc binary
+ * @returns {Array<JSDocAst>} The list of JSDoc comments ASTs in the file
+ */
+export function parseJsDocAst(filePath: string, jsDocBin?: string): JSDocAst[]
+
+/**
+ * Parses the JSDoc comments from all the JavaScript files at given directory
+ *
+ * @function
+ * @name parseJsFiles
+ * @param {string} [dir=process.cwd()] The path to the JavaScript files
+ * @param {boolean} [debug=false] Whether to log/debug to the console the progress of parsing the files
+ * @returns {Array<JSDocAst>} The list of JSDoc comments ASTs in the file
+ */
+export function parseJsFiles(dir?: string, debug?: boolean): JSDocAst[]
