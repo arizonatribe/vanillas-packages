@@ -1,2 +1,3 @@
 **/node_modules
 packages/template-express-typescript/lib
+packages/template-hapi-typescript/lib
