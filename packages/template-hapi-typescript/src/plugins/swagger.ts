@@ -1,13 +1,21 @@
 import * as Swagger from "hapi-swagger"
 import { ServerConfig } from "../config"
 
-export default function createPlugin(config: ServerConfig) {
+/**
+ * A plugin renders Swagger (OpenAPI formatted) API documentation
+ *
+ * @function
+ * @name PluginSwagger
+ * @param {ServerConfig} config The server configuration settings
+ * @returns {function} A function which builds a HapiJs server configuration plugin object
+ */
+export function register(config: ServerConfig) {
   const { name, version, apiVersion } = config
 
   const swaggerOptions: Swagger.RegisterOptions = {
     info: {
-      title: [name, "API Documentation"].join(" "),
-      version: version
+      version,
+      title: [name, "API Documentation"].join(" ")
     },
     basePath: `/${apiVersion}`,
     documentationPath: "/docs"

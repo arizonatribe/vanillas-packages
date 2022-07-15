@@ -45,7 +45,7 @@ export default function parseEnv() {
   return envalid.cleanEnv<ServerEnv>(process.env, {
     PRETTY_PRINT: bool({
       default: false,
-      desc: "Whether or not to format the stdout/stderr logs in a visually styled manner (mainly for local development)."
+      desc: "Whether or not to format the stdout/stderr logs in a visually styled manner (for local development)."
     }),
     HOST: str({
       desc: "The host/hostname for the application (without the transport protocol prefix)",

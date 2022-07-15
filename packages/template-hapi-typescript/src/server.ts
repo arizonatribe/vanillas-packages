@@ -3,8 +3,15 @@ import "reflect-metadata"
 import { Logger } from "pino"
 import createApp from "./app"
 
+/**
+ * Starts a HapiJs server
+ *
+ * @async
+ * @function
+ * @name startServer
+ */
 async function startServer() {
-  let logger: Console | Logger = console
+  let logger: typeof console | Logger = console
 
   try {
     const { server, config, services } = await createApp()

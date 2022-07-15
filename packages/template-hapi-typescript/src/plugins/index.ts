@@ -3,11 +3,10 @@ import { Server } from "@hapi/hapi"
 import { Services } from "../services"
 import { ServerConfig } from "../config"
 
-import createPulsePlugin from "./pulse"
-import createSwaggerPlugin from "./swagger"
-import createRequestIdPlugin from "./requestId"
-import createCatchAllPlugin from "./catchAll"
-import createErrorHandlerPlugin from "./error"
+import * as pulse from "./pulse"
+import * as swagger from "./swagger"
+import * as catchAll from "./catchAll"
+import * as errors from "./error"
 
 /**
  * Registers all the plugins to the root Hapi server
@@ -20,11 +19,10 @@ import createErrorHandlerPlugin from "./error"
  * @returns {Server} The same server, enhanced with the plugins registered to it
  */
 function addPlugins(server: Server, config: ServerConfig, services: Services) {
-  server.register(createErrorHandlerPlugin(config, services))
-  server.register(createSwaggerPlugin(config))
-  server.register(createRequestIdPlugin(config))
-  server.register(createPulsePlugin(config, services))
-  server.register(createCatchAllPlugin(config, services))
+  server.register(errors.register(config, services))
+  server.register(swagger.register(config))
+  server.register(pulse.register(config, services))
+  server.register(catchAll.register(config, services))
 
   return server
 }

@@ -31,7 +31,7 @@ export interface ServerConfig {
 /**
  * Builds the application config settings, derived largely from underlying environment variables.
  *
-*  @async
+ * @async
  * @function
  * @name createConfig
  * @throws {Error} When the underlying environment variables fail schema validation

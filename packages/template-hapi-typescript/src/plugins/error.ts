@@ -4,7 +4,17 @@ import { Server, Request, ResponseToolkit } from "@hapi/hapi"
 import { Services } from "../services"
 import { ServerConfig } from "../config"
 
-export default function createPlugin(_config: ServerConfig, services: Services) {
+/**
+ * A plugin which logs and handles error responses globally.
+ * It also redacts 500-level error messages from the end user.
+ *
+ * @function
+ * @name PluginErrors
+ * @param {ServerConfig} _config The server configuration settings
+ * @param {Services} services The application services shared across plugins and routes
+ * @returns {function} A function which builds a HapiJs server configuration plugin object
+ */
+export function register(_config: ServerConfig, services: Services) {
   const { logger } = services
 
   return {
