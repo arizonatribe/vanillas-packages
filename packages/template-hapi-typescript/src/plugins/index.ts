@@ -1,4 +1,6 @@
 import { Server } from "@hapi/hapi"
+import * as Inert from "@hapi/inert"
+import * as Vision from "@hapi/vision"
 
 import { Services } from "../services"
 import { ServerConfig } from "../config"
@@ -20,6 +22,8 @@ import * as errors from "./error"
  */
 function addPlugins(server: Server, config: ServerConfig, services: Services) {
   server.register(errors.register(config, services))
+  server.register(Inert)
+  server.register(Vision)
   server.register(swagger.register(config))
   server.register(pulse.register(config, services))
   server.register(catchAll.register(config, services))

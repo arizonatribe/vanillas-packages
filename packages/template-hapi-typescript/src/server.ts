@@ -16,7 +16,7 @@ async function startServer() {
   try {
     const { server, config, services } = await createApp()
 
-    const { port, name, level, isProduction, apiVersion, version } = config
+    const { name, level, isProduction, apiVersion, version } = config
 
     if (services.logger) {
       logger = services.logger
@@ -28,7 +28,7 @@ async function startServer() {
       logger.info(`🌳 Logging level set to: "${level}"`)
       logger.info(`🚀 ${name}-${
         isProduction ? "prod" : "dev"
-      } (${version}) now running on port ${port} at /${apiVersion}`)
+      } (${version}) now running at ${server.info.uri}/${apiVersion}`)
     }
   } catch (err: any) {
     logger.error(err)

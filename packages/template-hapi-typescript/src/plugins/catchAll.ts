@@ -22,18 +22,18 @@ export function register(_config: ServerConfig, services: Services) {
     async register(server: Server) {
       server.ext("onPreResponse", (req: Request, res: ResponseToolkit) => {
         /* Move forward in the request lifecycle if the asset was found */
-        if ((req.response as Boom).output?.statusCode === 404) {
+        if ((req.response as Boom).output?.statusCode !== 404) {
           return res.continue
         }
 
         logger.warn({ info: req.info, url: req.url, method: req.method, id: req.info?.id })
 
         logger.warn(`${req.method.toUpperCase()} request for unsupported endpoint: ${req.url}`)
-        return res.response(`The endpoint ${
+        return res.response(`The endpoint '${
           req.url
-        } is not supported by this application (or isn't supported for ${
-          req.method
-        } requests like these`).code(404)
+        }' is not supported by this application (or isn't supported for ${
+          (req.method || "get").toUpperCase()
+        } requests like these)`).code(404)
       })
     }
   }

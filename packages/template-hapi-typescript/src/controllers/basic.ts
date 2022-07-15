@@ -1,5 +1,5 @@
 import { ServerRoute } from "@hapi/hapi"
-import { controller, Controller, get, validate } from "hapi-decorators"
+import { controller, Controller, get, validate, options } from "hapi-decorators"
 
 export interface HealthCheckResponse {
   status: number
@@ -27,6 +27,10 @@ export class BasicController implements Controller {
     this.appVersion = config.version
   }
 
+  @options({
+    tags: ["api"],
+    description: "Displays application uptime and basic application metadata"
+  })
   @validate({ headers: true })
   @get("/healthcheck")
   public async healthCheck(): Promise<HealthCheckResponse | void> {
