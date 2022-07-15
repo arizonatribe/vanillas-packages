@@ -8,6 +8,7 @@ const logger = require("@vanillas/console-logger")
 const templates = [
   { title: "Express (JavaScript)", value: "express" },
   { title: "Express (TypeScript)", value: "express-typescript" },
+  { title: "Hapi (TypeScript)", value: "hapi-typescript" },
   { title: "Polka (JavaScript)", value: "polka" }
 ]
 
