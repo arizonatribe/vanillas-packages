@@ -1,6 +1,6 @@
 {
   "name": "@vanillas/eslint-config",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A plain linting configuration template for JavaScript and TypeScript NodeJs applications",
   "main": "lib/index.js",
   "license": "MIT",

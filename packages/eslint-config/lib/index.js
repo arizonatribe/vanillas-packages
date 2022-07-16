@@ -96,7 +96,9 @@ module.exports = {
           "**/*.test.js",
           "**/*.test.ts",
           "**/.eslintrc.js",
-          "**/babel.config.js"
+          "**/babel.config.js",
+          "**/jest.config.js",
+          "**/jest.config.ts"
         ],
         optionalDependencies: false,
         peerDependencies: false
