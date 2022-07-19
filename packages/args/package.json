@@ -1,0 +1,35 @@
+{
+  "name": "@vanillas/args",
+  "version": "1.0.0",
+  "description": "Parse command-line args into an object",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "type": "commonjs",
+  "types": "index.d.ts",
+  "engines": {
+    "node": ">=12.17.0"
+  },
+  "keywords": [
+    "args",
+    "command-line args",
+    "parse"
+  ],
+  "scripts": {
+    "test": "mocha test",
+    "test:watch": "mocha test --watch",
+    "format": "eslint lib --fix",
+    "lint": "eslint lib"
+  },
+  "author": "David Nunez <arizonatribe@gmail.com>",
+  "homepage": "https://github.com/arizonatribe/vanillas-packages/blob/main/packages/args/README.md",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:arizonatribe/vanillas-packages.git"
+  },
+  "devDependencies": {
+    "@vanillas/eslint-config": "^1.0.0",
+    "eslint": "^8.0.0",
+    "mocha": "^9.2.1",
+    "typescript": "^4.1.3"
+  }
+}

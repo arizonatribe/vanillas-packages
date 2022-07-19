@@ -1,6 +1,6 @@
 {
   "name": "@vanillas/cli-toolkit",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "A suite of helper utilities you can use to create NodeJs scripts",
   "main": "lib/index.js",
   "license": "MIT",
@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@vanillas/console-logger": "^1.0.0",
+    "@vanillas/args": "^1.0.0",
     "fs-extra": "^10.0.0",
     "glob": "^7.2.0",
     "vanillas": "^1.5.0"

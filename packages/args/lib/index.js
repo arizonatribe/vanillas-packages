@@ -1,4 +1,21 @@
-const toCamelCase = require("vanillas/toCamelCase")
+/**
+ * Transforms a string value into one which is hyphenated.
+ * Hyphens and underscores are removed and interpred as the boundaries for new words.
+ * The first letter of each new word - not preceded by whitespace - is capitalized.
+ *
+ * @function
+ * @name _toCamelCase
+ * @param {string} str A string which may contain underscores and hyphens and/or may be title-cased.
+ * @returns {string} A new string that is without hyphens and underscores and the first letter of every new word boundary is capitalized, unless preceded by whitespace
+ */
+function _toCamelCase(str) {
+  return [
+    str.charAt(0).toLowerCase(),
+    str.slice(1)
+      .replace(/[_-]+[a-z]/ig, w => w.replace(/[_-]/g, "").toUpperCase())
+      .replace(/\s+[A-Z]/g, w => w.toLowerCase())
+  ].join("")
+}
 
 /**
  * Coerces a given value into a boolean or number (if appropriate) otherwise returns the value as-is
@@ -48,16 +65,17 @@ function parseArgs(args) {
     if (/^--?/.test(arg)) {
       const [key, val = true] = arg.replace(/^--?/, "").split("=")
 
-      options[toCamelCase(key)] = toArgValue(val)
+      options[_toCamelCase(key)] = toArgValue(val)
 
       if (/^([^=]+)=([^=]+)/.test(arg)) {
         lastArgName = undefined
       } else {
-        lastArgName = toCamelCase(key)
+        lastArgName = _toCamelCase(key)
       }
     } else {
       const argVal = toArgValue(arg)
       const argName = lastArgName || "_"
+
       options[argName] = options[argName] == null
         ? argVal
         : Array.isArray(options[argName])
@@ -65,20 +83,22 @@ function parseArgs(args) {
           : options[argName] === true
             ? (Array.isArray(argVal) ? argVal : [argVal])
             : [options[argName], argVal]
-      lastArgName = undefined
     }
   }
 
-  Object.keys(options)
-    .filter(k => options[k] === undefined)
-    .forEach(key => {
+  Object.keys(options).forEach(key => {
+    if (options[key] === undefined) {
       options[key] = true
-    })
+    } else if (key !== "_" && options[key].length === 1) {
+      [options[key]] = options[key]
+    } else if (key === "_" && !Array.isArray(options[key])) {
+      options[key] = [options[key]]
+    }
+  })
 
   return options
 }
 
-module.exports = {
-  toArgValue,
-  parseArgs
-}
+module.exports = parseArgs
+module.exports.toArgValue = toArgValue
+module.exports.parseArgs = parseArgs

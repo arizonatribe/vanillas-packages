@@ -39,6 +39,7 @@ export type ArgValue = string | number | boolean | string[] | number [] | boolea
 export type SemverUpdateType = "major" | "minor" | "patch"
 
 export interface ParsedArgs {
+  _: ArgValue[]
   [key: string]: ArgValue
 }
 
@@ -57,7 +58,7 @@ export function parseArgs(args: string[] | number[] | boolean[]): ParsedArgs
  *
  * @function
  * @name toArgValue
- * @param {string|boolean|number} val A raw primitive value pulled from the command-line args (process.argv)
+ * @param {string|boolean|number} arg A raw primitive value pulled from the command-line args (process.argv)
  * @returns {ArgValue} The original value, but coerced to a number or boolean _if_ that value was a stringified number or boolean
  */
 export function toArgValue(arg: string | number | boolean): ArgValue

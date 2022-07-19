@@ -1,6 +1,6 @@
 const fs = require("./fs")
 const git = require("./git")
-const args = require("./args")
+const args = require("@vanillas/args")
 const paths = require("./paths")
 const jsdoc = require("./jsdoc")
 const scaffold = require("./scaffold")
