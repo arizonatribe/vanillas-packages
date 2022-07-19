@@ -1,3 +1,4 @@
+/* global it */
 const assert = require("assert")
 const { parseArgs } = require("../lib")
 
